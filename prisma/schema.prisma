@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_DIRECT_URL")
+}
+
+model User {
+  id                    String               @id @default(cuid())
+  email                 String               @unique
+  passwordHash          String
+  role                  String               @default("user")
+  stripeCustomerId      String?              @unique
+  trialAccessExpiresAt  DateTime?
+  legalAcceptedAt       DateTime?
+  legalAcceptedVersion String?
+  legalAcceptedIp       String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  subscription          Subscription?
+  createdAccessCodes    AccessCode[]         @relation("CreatedAccessCodes")
+  redemptions           AccessCodeRedemption[]
+  securityEvents        SecurityEvent[]
+}
+
+model Subscription {
+  id                   String    @id @default(cuid())
+  userId               String    @unique
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status               String
+  currentPeriodEnd     DateTime?
+  stripeCustomerId     String?
+  stripeSubscriptionId String?   @unique
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
+
+model AccessCode {
+  id                String                 @id @default(cuid())
+  code              String                 @unique
+  expiresAt         DateTime
+  grantHours        Int                    @default(24)
+  maxUses           Int                    @default(1)
+  usedCount         Int                    @default(0)
+  isActive          Boolean                @default(true)
+  createdByUserId   String
+  createdByUser     User                   @relation("CreatedAccessCodes", fields: [createdByUserId], references: [id], onDelete: Cascade)
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  redemptions       AccessCodeRedemption[]
+}
+
+model AccessCodeRedemption {
+  id             String     @id @default(cuid())
+  accessCodeId   String
+  userId         String
+  grantedUntil   DateTime
+  redeemedAt     DateTime   @default(now())
+  accessCode     AccessCode @relation(fields: [accessCodeId], references: [id], onDelete: Cascade)
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([accessCodeId, userId])
+}
+
+model RateLimitBucket {
+  id          String   @id @default(cuid())
+  key         String
+  scope       String
+  windowStart DateTime
+  count       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([key, scope, windowStart])
+  @@index([scope, key, windowStart])
+}
+
+model ChamberDrawing {
+  id             String   @id @default(cuid())
+  caliberInch    Float
+  cartridgeName  String
+  saamiUrl       String?
+  notes          String?
+  isActive       Boolean  @default(true)
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([caliberInch, isActive])
+}
+
+model SecurityEvent {
+  id        String   @id @default(cuid())
+  category  String
+  route     String
+  message   String
+  ip        String?
+  email     String?
+  userId    String?
+  metadata  String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([category, createdAt])
+  @@index([route, createdAt])
+  @@index([email, createdAt])
+}

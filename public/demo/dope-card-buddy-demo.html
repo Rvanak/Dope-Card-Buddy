@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dope Card Buddy</title>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b0e;--s1:#0e1318;--s2:#131a22;--s3:#1a2430;
+  --amber:#c97f10;--amb2:#f0a020;--green:#3dc95a;--blue:#4db8ff;--red:#ff5252;
+  --txt:#c0cdd8;--txt2:#546070;--brdr:#1a2838;
+  --mono:'Share Tech Mono',monospace;--head:'Oxanium',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--txt);font-family:var(--mono);font-size:12px;display:flex;flex-direction:column;height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(201,127,16,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(201,127,16,.018) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+.hdr{background:var(--s1);border-bottom:2px solid var(--amber);height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;position:relative;z-index:2}
+.hdr-l{display:flex;align-items:center;gap:12px}
+.hdr-l svg{width:34px;height:34px}
+.htitle{font-family:var(--head);font-size:15px;font-weight:800;color:var(--amb2);letter-spacing:3px;text-transform:uppercase}
+.hsub{font-size:9px;color:var(--txt2);letter-spacing:2px;margin-top:1px}
+.hdr-r{display:flex;gap:0}
+.hstat{text-align:right;padding:0 14px;border-left:1px solid var(--brdr)}
+.hstat .lbl{font-size:8px;color:var(--txt2);letter-spacing:1.5px;text-transform:uppercase}
+.hstat .val{font-size:13px;color:var(--amb2);font-family:var(--head);font-weight:700}
+.layout{display:flex;flex:1;overflow:hidden;position:relative;z-index:1}
+.sidebar{width:268px;min-width:268px;background:var(--s1);border-right:1px solid var(--brdr);overflow-y:auto;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--brdr)}
+.panel{border-bottom:1px solid var(--brdr);padding:9px 13px}
+.ptitle{font-family:var(--head);font-size:8.5px;letter-spacing:2.5px;color:var(--amber);margin-bottom:7px;padding-bottom:5px;border-bottom:1px solid var(--brdr);text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.ptitle::before{content:'';display:inline-block;width:5px;height:5px;border:1px solid var(--amber);transform:rotate(45deg);flex-shrink:0}
+.field{display:flex;align-items:center;margin-bottom:4px;gap:5px}
+.field label{color:var(--txt2);font-size:10px;width:108px;flex-shrink:0}
+.field label.hi{color:var(--amber)}
+.field input,.field select{flex:1;min-width:0;background:var(--bg);border:1px solid var(--brdr);color:var(--txt);padding:3px 6px;font-family:var(--mono);font-size:11px;border-radius:2px}
+.field input:focus,.field select:focus{outline:none;border-color:var(--amber)}
+.field select option{background:var(--s2)}
+.rrow{display:flex;gap:10px;margin-bottom:4px}
+.rrow label{display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--txt2);font-size:10px}
+.rrow input[type=radio]{accent-color:var(--amber)}
+.btn{width:100%;background:var(--amber);color:#000;border:none;padding:7px;font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:3px}
+.btn:hover{background:var(--amb2)}
+.btn.sec{background:var(--s3);color:var(--txt2);border:1px solid var(--brdr)}
+.btn.sec:hover{border-color:var(--amber);color:var(--amber)}
+.da-box{margin-top:5px;padding:6px 8px;background:var(--bg);border:1px solid var(--brdr);border-radius:2px;display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.da-it .lbl{font-size:8px;color:var(--txt2);letter-spacing:1px;text-transform:uppercase}
+.da-it .val{font-size:13px;font-weight:bold;color:var(--amb2)}
+.da-it .val.da0{color:var(--green)}.da-it .val.da1{color:var(--amb2)}.da-it .val.da2{color:var(--red)}
+.da-it .val.blue{color:var(--blue)}.da-it .val.white{color:var(--txt)}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tabbar{display:flex;background:var(--s1);border-bottom:1px solid var(--brdr);flex-shrink:0;overflow-x:auto}
+.tabbar::-webkit-scrollbar{height:2px}
+.tab{padding:8px 15px;font-family:var(--head);font-size:8.5px;letter-spacing:1.5px;color:var(--txt2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
+.tab:hover{color:var(--txt)}.tab.on{color:var(--amb2);border-bottom-color:var(--amb2)}
+.stats{background:var(--s2);border-bottom:1px solid var(--brdr);padding:5px 14px;display:flex;flex-shrink:0}
+.si{padding:0 14px;border-right:1px solid var(--brdr);display:flex;flex-direction:column;gap:1px}
+.si:first-child{padding-left:0}.si:last-child{border-right:none}
+.si .lbl{font-size:7.5px;color:var(--txt2);letter-spacing:1.5px;text-transform:uppercase}
+.si .val{font-size:13px;font-weight:700;color:var(--amb2);font-family:var(--head)}
+.si .val.g{color:var(--green)}.si .val.b{color:var(--blue)}
+.twrap{flex:1;overflow:auto}
+.twrap::-webkit-scrollbar{width:5px;height:5px}
+.twrap::-webkit-scrollbar-thumb{background:var(--brdr);border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+thead{position:sticky;top:0;z-index:5}
+th{background:var(--s2);color:var(--amber);font-family:var(--head);font-size:8.5px;letter-spacing:1px;text-transform:uppercase;padding:6px 10px;text-align:center;border-bottom:2px solid var(--amber);border-right:1px solid var(--brdr);white-space:nowrap;font-weight:700}
+th:first-child{text-align:center}
+th.tg{color:var(--green)}th.tb{color:var(--blue)}th.tr{color:var(--red)}
+td{padding:4px 10px;text-align:center;border-bottom:1px solid #0d1520;border-right:1px solid #0d1520;color:var(--txt)}
+td:first-child{text-align:center;font-family:var(--head);font-weight:600;color:var(--amb2)}
+tr:hover td{background:rgba(255,255,255,.02)}
+tr.rzero td{background:rgba(61,201,90,.05)}tr.rzero td:first-child{color:var(--green)}
+tr.rsub td{color:var(--txt2)}tr.rsub td:first-child{color:#3a5060}
+.cm{color:var(--blue)!important}.cg{color:var(--green)!important}
+.ca{color:var(--amb2)!important}.cr{color:var(--red)!important}.cd{color:var(--txt2)!important}
+.tc{display:none;flex-direction:column;flex:1;overflow:hidden}
+.tc.on{display:flex}
+.da-note{padding:7px 14px;font-size:10px;color:var(--txt2);background:var(--s2);border-bottom:1px solid var(--brdr);flex-shrink:0}
+.da-note b{color:var(--amb2)}
+.movers-out{flex:1;overflow:auto}
+.movers-out::-webkit-scrollbar{width:5px;height:5px}
+.movers-out::-webkit-scrollbar-thumb{background:var(--brdr)}
+.msec{padding:6px 14px;font-family:var(--head);font-size:9px;letter-spacing:2px;color:var(--amber);background:var(--s2);border-bottom:1px solid var(--brdr);text-transform:uppercase}
+/* ── Wrist Coach tab ─────────────────────────────── */
+.wc-outer{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.wc-toolbar{background:var(--s2);border-bottom:1px solid var(--brdr);padding:8px 16px;display:flex;gap:8px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.wc-toolbar-lbl{font-family:var(--head);font-size:9px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;white-space:nowrap}
+.wc-scroll{flex:1;overflow:auto;padding:22px 32px 30px;display:flex;flex-direction:column;gap:36px;align-items:flex-start;background:#111316}
+.wc-card-wrap{display:flex;flex-direction:column;gap:7px}
+.wc-card-sizelbl{font-family:var(--mono);font-size:9px;color:var(--txt2);letter-spacing:1.2px;display:flex;align-items:center;gap:10px}
+.wc-card-sizelbl b{color:var(--amber)}
+.wc-card{width:720px;height:432px;background:#fff;color:#000;border:2px solid #333;
+  box-shadow:0 0 0 4px #1c1c1c,0 10px 40px rgba(0,0,0,.85);
+  overflow:hidden;display:flex;flex-direction:column;
+  font-family:Arial,Helvetica,sans-serif;flex-shrink:0}
+.wc-card{border-left:3px solid #000}
+.wc-h1{display:grid;grid-template-columns:1fr 1.6fr 1fr;border-bottom:2px solid #2b2b2b;flex-shrink:0}
+.wc-h1 div{padding:2px 6px;font-size:10px;font-weight:bold;border-right:2px solid #2b2b2b;white-space:nowrap;overflow:hidden;line-height:1.1}
+.wc-h1 div:last-child{border-right:none}
+.wc-h2{display:flex;border-bottom:2px solid #2b2b2b;flex-shrink:0}
+.wc-h2 .c{flex:1;padding:1px 4px;font-size:9px;font-weight:bold;border-right:1px solid #8e8e8e;white-space:nowrap;overflow:hidden;line-height:1.1}
+.wc-h2 .c:last-child{border-right:none}
+.wc-h2 .c .v{background:transparent;padding:0 3px}
+.wc-data{flex:1;display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden}
+.wc-dcol{border-right:2px solid #5a5a5a;overflow:hidden;display:flex;flex-direction:column}
+.wc-dcol:last-child{border-right:none}
+.wc-drows{flex:1;display:flex;flex-direction:column;min-height:0}
+.wc-sch{display:grid;grid-template-columns:35fr 34fr 31fr;background:#ffffff;border-bottom:2px solid #2b2b2b;flex-shrink:0}
+.wc-sch span{padding:1px 3px;font-size:9px;font-weight:bold;text-align:center;border-right:1px solid #9f9f9f;color:#000;line-height:1.15}
+.wc-sch span:last-child{border-right:none}
+.wc-dr{display:grid;grid-template-columns:35fr 34fr 31fr;border-bottom:0.5px solid rgba(0,0,0,0.22)}
+.wc-dr span{padding:0 3px;font-size:9px;text-align:center;
+  border-right:0.5px solid rgba(0,0,0,0.2);line-height:1.34;color:#000;white-space:nowrap;overflow:hidden}
+.wc-dr span:first-child{text-align:center;font-weight:bold;color:#000}
+.wc-dr span:last-child{border-right:none}
+.wc-dr.sub span{color:#888}
+.wc-drows .wc-dr{flex:1;align-items:center}
+.wc-drows .wc-dr:nth-child(odd){background:#f4f4f4}
+.wc-dr .drop-v{color:#ff0000}
+.wc-dr .wind-v{color:#063d9a}
+.wc-dr .dist-k{background:transparent}
+.wc-card.wc-card-10 .wc-h1 div{font-size:9px;padding:1px 5px}
+.wc-card.wc-card-10 .wc-h1{grid-template-columns:1.35fr 1.35fr 0.9fr}
+.wc-card.wc-card-10 .wc-h1 div:first-child{
+  font-size:8px;
+  white-space:normal;
+  line-height:1.0;
+}
+.wc-card.wc-card-10 .wc-h2 .c{font-size:8px;padding:1px 3px}
+.wc-card.wc-card-10 .wc-sch span{font-size:8px;padding:1px 2px}
+.wc-card.wc-card-10 .wc-dr span{font-size:8px;line-height:1.12;padding:0 2px}
+.wc-card.wc-card-10 .wc-dcol{border-right:1px solid #5a5a5a}
+.wc-card.wc-card-sdf .wc-h1 div{font-size:9px;padding:1px 5px}
+.wc-card.wc-card-sdf .wc-h2{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-bottom:2px solid #2b2b2b;
+}
+.wc-card.wc-card-sdf .wc-h2 .c{
+  padding:1px 3px;
+  font-size:8px;
+  border-right:1px solid #8e8e8e;
+  border-bottom:1px solid #8e8e8e;
+  line-height:1.1;
+}
+.wc-card.wc-card-sdf .wc-h2 .c:nth-child(3n){border-right:none}
+.wc-card.wc-card-sdf .wc-h2 .c:nth-last-child(-n+3){border-bottom:none}
+.wc-card.wc-card-sdf .wc-sch span{font-size:8px;padding:1px 2px}
+.wc-card.wc-card-sdf .wc-dr span{font-size:8px;line-height:1.12;padding:0 2px}
+.wc-card.wc-card-sdf .wc-dcol{border-right:1px solid #5a5a5a}
+.wc-card.wc-card-mwc .wc-h1 div{font-size:9px;padding:1px 5px}
+.wc-card.wc-card-mwc .wc-h2 .c{font-size:8px;padding:1px 3px}
+.wc-card.wc-card-mwc .wc-sch span{font-size:8px;padding:1px 2px}
+.wc-card.wc-card-mwc .wc-dr span{font-size:8px;line-height:1.14;padding:1px 2px}
+.wc-card.wc-card-mwc .wc-dcol{border-right:1px solid #5a5a5a}
+.pbtn{background:var(--amber);color:#000;border:none;padding:5px 13px;font-family:var(--head);font-size:9px;font-weight:700;letter-spacing:1.5px;cursor:pointer;border-radius:2px;text-transform:uppercase;white-space:nowrap}
+.pbtn:hover{background:var(--amb2)}
+.pbtn.ghost{background:var(--s3);color:var(--txt2);border:1px solid var(--brdr)}
+.pbtn.ghost:hover{border-color:var(--amber);color:var(--amber);background:var(--s3)}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:250px;gap:10px;color:var(--txt2)}
+.empty .ico{font-size:40px;opacity:.25}.empty .msg{font-family:var(--head);letter-spacing:2px;font-size:11px}
+
+.print-preview{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:9999}
+.print-preview.on{display:flex}
+.print-preview-panel{width:min(980px,94vw);height:min(760px,92vh);background:#0d1116;border:1px solid var(--brdr);box-shadow:0 20px 70px rgba(0,0,0,.7);display:flex;flex-direction:column}
+.print-preview-toolbar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--s2);border-bottom:1px solid var(--brdr)}
+.print-preview-title{font-family:var(--head);font-size:10px;letter-spacing:1.5px;color:var(--amber);text-transform:uppercase;flex:1}
+.print-preview-framewrap{flex:1;background:#1b1f25;display:flex;padding:14px;min-height:0}
+.print-preview-cards{width:100%;height:100%;overflow:auto;display:flex;flex-direction:column;align-items:center;gap:14px;padding:2px}
+.print-preview-sheet{padding:2px}
+
+
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <svg viewBox="0 0 34 34" fill="none">
+      <circle cx="17" cy="17" r="7.5" stroke="#c97f10" stroke-width="1"/>
+      <circle cx="17" cy="17" r="1.8" fill="#f0a020"/>
+      <line x1="17" y1="2"    x2="17" y2="9.5"  stroke="#c97f10" stroke-width="1"/>
+      <line x1="17" y1="24.5" x2="17" y2="32"   stroke="#c97f10" stroke-width="1"/>
+      <line x1="2"  y1="17"   x2="9.5"  y2="17" stroke="#c97f10" stroke-width="1"/>
+      <line x1="24.5" y1="17" x2="32"   y2="17" stroke="#c97f10" stroke-width="1"/>
+      <circle cx="17" cy="17" r="12" stroke="#c97f10" stroke-width=".5" stroke-dasharray="2 3"/>
+    </svg>
+    <div>
+      <div class="htitle">Dope Card Buddy</div>
+      <div class="hsub">G1 · G7 DRAG MODEL · POINT MASS TRAJECTORY SOLVER</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div class="hstat"><div class="lbl">Density Altitude</div><div class="val" id="hdDA">0 ft</div></div>
+    <div class="hstat"><div class="lbl">Speed of Sound</div><div class="val" id="hdSOS">1117 fps</div></div>
+    <div class="hstat"><div class="lbl">ρ / ρ₀</div><div class="val" id="hdRho">1.0000</div></div>
+    <div class="hstat"><div class="lbl">Mach @ MV</div><div class="val" id="hdMach">—</div></div>
+  </div>
+</div>
+
+<div class="layout">
+<div class="sidebar">
+
+  <div class="panel">
+    <div class="ptitle">Bullet Profile</div>
+    <div class="field"><label>Rifle Caliber</label>
+      <select id="rifleCaliber" onchange="onCaliberChange()">
+        <option value="">— Select Caliber —</option>
+      </select>
+    </div>
+    <div class="field"><label>Bullet</label>
+      <select id="preset" onchange="loadPreset()">
+        <option value="">— Select Bullet —</option>
+      </select>
+    </div>
+    <div class="field"><label>Name</label><input type="text" id="bulletName" value="6.5 CM 175gr Custom"></div>
+    <div class="field"><label>Caliber (in)</label><input type="number" id="cal" value="0.264" step="0.001" min="0.17" max="0.50"></div>
+    <div class="field"><label>Weight (gr)</label><input type="number" id="weight" value="175" step="1" min="30" max="800"></div>
+    <div class="field"><label>BC Type</label>
+      <div class="rrow" style="flex:1">
+        <label><input type="radio" name="bct" value="G7" checked> G7</label>
+        <label><input type="radio" name="bct" value="G1"> G1</label>
+      </div>
+    </div>
+    <div class="field"><label>BC Value</label><input type="number" id="bc" value="0.350" step="0.001" min="0.05" max="1.5"></div>
+    <div class="field"><label>Muzzle Vel (fps)</label><input type="number" id="mv" value="2744" step="1" min="500" max="5000" oninput="refreshAtmo()"></div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">Weapon &amp; Optic</div>
+    <div class="field"><label id="rangeUnitLbl">Range Unit</label>
+      <select id="rangeUnit" onchange="onRangeUnitChange()">
+        <option value="yds" selected>yds</option>
+        <option value="m">m</option>
+      </select>
+    </div>
+    <div class="field"><label>Scope Height (in)</label><input type="number" id="scopeHt" value="2.0" step="0.1" min="0.5" max="5.0"></div>
+    <div class="field"><label id="zeroRangeLbl">Zero Range (yds)</label><input type="number" id="zeroRange" value="100" step="25" min="25" max="600"></div>
+    <div class="field"><label id="maxRangeLbl">Max Range (yds)</label><input type="number" id="maxRange" value="1500" step="100" min="100" max="3000"></div>
+    <div class="field"><label id="stepLbl">Step (yds)</label>
+      <select id="stepSize">
+        <option value="10">10 yds</option><option value="25">25 yds</option><option value="50" selected>50 yds</option><option value="100">100 yds</option>
+      </select>
+    </div>
+    <div class="field"><label id="trueRangeLbl">True @ Range (yds)</label><input type="number" id="trueRange" value="" step="10" min="100" max="3000" placeholder="optional"></div>
+    <div class="field"><label>Observed MIL</label><input type="number" id="trueMil" value="" step="0.01" min="0" max="60" placeholder="optional"></div>
+    <div class="field"><label id="trueRange2Lbl">True @ Range 2 (yds)</label><input type="number" id="trueRange2" value="" step="10" min="100" max="3000" placeholder="optional"></div>
+    <div class="field"><label>Observed MIL 2</label><input type="number" id="trueMil2" value="" step="0.01" min="0" max="60" placeholder="optional"></div>
+    <div class="field"><label>True @ DA (ft)</label><input type="number" id="trueDA" value="" step="500" min="-2000" max="15000" placeholder="optional"></div>
+    <div class="field"><label>DA Truing (ft:mil)</label><input type="text" id="trueDaMilMap" value="" placeholder="-2000:1.20, 0:1.55, 4000:5.63"></div>
+    <div style="font-size:9px;color:var(--txt2);margin-top:2px">For all DA columns: use True @ Range, then add optional DA:mil pairs.</div>
+    <div style="font-size:9px;color:var(--txt2);margin-top:2px">Optional truing: solver adjusts effective BC to match this observed drop.</div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">Wind</div>
+    <div class="field"><label>Speed (mph)</label><input type="number" id="windSpd" value="10" step="1" min="0" max="50"></div>
+    <div class="field"><label>Clock (hrs)</label><input type="number" id="windClock" value="3" step="0.5" min="0" max="12"></div>
+    <div style="font-size:9px;color:var(--txt2);margin-top:2px">3 o'clock = full crosswind right · 9 = left</div>
+    <div style="font-size:9px;color:var(--txt2);margin-top:2px">Model note: solution does not include aerodynamic jump.</div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">Atmosphere</div>
+
+    <div class="field">
+      <label id="tempLbl">Temperature (°F)</label>
+      <input type="number" id="temp" value="59" step="1" min="-60" max="130" oninput="refreshAtmo()">
+      <select id="tempUnit" style="max-width:56px" onchange="onTempUnitChange()">
+        <option value="F" selected>°F</option>
+        <option value="C">°C</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Elevation (ft)</label>
+      <input type="number" id="elevation" value="0" step="100" min="-1400" max="18000" oninput="onElevChange()">
+    </div>
+    <div class="field">
+      <!-- Amber label = user-editable, auto-filled by elevation -->
+      <label class="hi">Station Press (inHg)</label>
+      <input type="number" id="pressure" value="29.92" step="0.01" min="13.0" max="32.0" oninput="refreshAtmo()">
+    </div>
+    <div style="font-size:9px;color:var(--txt2);margin:-2px 0 5px 0">Elevation auto-fills ISA press · override with Kestrel reading</div>
+    <div class="field">
+      <label>Humidity (%)</label>
+      <!-- 0% default → ISA baseline (59 °F / 29.92 inHg / 0%) gives DA = 0 ft -->
+      <input type="number" id="humidity" value="0" step="5" min="0" max="100" oninput="refreshAtmo()">
+    </div>
+
+    <!--
+      DA BOX — 4 output cells.
+      All 4 are updated by a single refreshAtmo() call, preventing the
+      "two boxes showing 110 ft" bug caused by split update paths.
+    -->
+    <div class="da-box">
+      <div class="da-it">
+        <div class="lbl">Density Altitude</div>
+        <div class="val da0" id="daV">0 ft</div>
+      </div>
+      <div class="da-it">
+        <div class="lbl">Speed of Sound</div>
+        <div class="val blue" id="sosV">1117 fps</div>
+      </div>
+      <div class="da-it">
+        <div class="lbl">Air Density (kg/m³)</div>
+        <div class="val white" id="rhoV">1.2250</div>
+      </div>
+      <div class="da-it">
+        <div class="lbl">Density Ratio ρ/ρ₀</div>
+        <div class="val white" id="rhoRV">1.0000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">Wrist Coach Card 2</div>
+    <div class="field"><label>Card 2 DA (ft)</label>
+      <input type="number" id="da2" value="3000" step="500" min="-2000" max="15000">
+    </div>
+    <div style="font-size:9px;color:var(--txt2);margin-top:2px">Card 1 = current DA · Card 2 = this DA</div>
+  </div>
+
+  <div class="panel">
+    <button class="btn" onclick="calculate()">▶ CALCULATE ALL TABS</button>
+    <button class="btn sec" onclick="exportCSV()">↓ EXPORT CSV</button>
+    <button class="btn sec" onclick="resetSavedInputs()">↺ RESET SAVED INPUTS</button>
+  </div>
+
+</div><!-- /sidebar -->
+
+<div class="content">
+  <div class="tabbar">
+    <div class="tab on" onclick="switchTab('tcRC',this)">Standard Range Card</div>
+    <div class="tab"    onclick="switchTab('tcSDF',this)">Speed Drop Factor</div>
+    <div class="tab"    onclick="switchTab('tcDA',this)">Density Altitude</div>
+    <div class="tab"    onclick="switchTab('tcMV',this)">Movers</div>
+    <div class="tab"    onclick="switchTab('tcWC',this)">3×5 Wrist Coach</div>
+    <div class="tab"    onclick="switchTab('tcMWC',this)">3×5 Movers Coach</div>
+    <div class="tab"    onclick="switchTab('tcSDFWC',this)">3×5 SDF Coach</div>
+  </div>
+
+  <div class="tc on" id="tcRC">
+    <div class="stats">
+      <div class="si"><div class="lbl">Bullet</div><div class="val" id="stB">—</div></div>
+      <div class="si"><div class="lbl">MV</div><div class="val" id="stMV">—</div></div>
+      <div class="si"><div class="lbl">Muzzle Energy</div><div class="val" id="stME">—</div></div>
+      <div class="si"><div class="lbl">Zero</div><div class="val g" id="stZ">—</div></div>
+      <div class="si"><div class="lbl">Subsonic At</div><div class="val b" id="stSub">—</div></div>
+      <div class="si"><div class="lbl">BC / Type</div><div class="val" id="stBC">—</div></div>
+    </div>
+    <div class="twrap" id="twRC"><div class="empty"><div class="ico">⊕</div><div class="msg">Press CALCULATE</div></div></div>
+  </div>
+
+  <div class="tc" id="tcSDF">
+    <div class="da-note"><b>Speed Drop Factor</b> — SDF = (Range/100) − Elevation(MIL). Field use: Elevation(MIL) ≈ (Range/100) − SDF. Delta columns show MIL shift for MV deviations from nominal.</div>
+    <div class="twrap" id="twSDF"><div class="empty"><div class="ico">📊</div><div class="msg">Calculate First</div></div></div>
+  </div>
+
+  <div class="tc" id="tcSDFWC">
+    <div id="twSDFWC" style="flex:1;display:flex;flex-direction:column;overflow:hidden"><div class="empty"><div class="ico">🧮</div><div class="msg">Calculate First</div></div></div>
+  </div>
+
+  <div class="tc" id="tcDA">
+    <div class="da-note">
+      <b>Density Altitude Comparison</b> — Drop (MIL) at each range for various density altitudes.
+      Your DA = <b id="daNote" style="color:var(--amb2)">0 ft</b>. Higher DA = thinner air = less come-up. Spin drift ≈ 1% of come-up (RH twist).
+    </div>
+    <div class="twrap" id="twDA"><div class="empty"><div class="ico">⛰</div><div class="msg">Calculate First</div></div></div>
+  </div>
+
+  <div class="tc" id="tcMV">
+    <div class="movers-out" id="twMV"><div class="empty"><div class="ico">🎯</div><div class="msg">Calculate First</div></div></div>
+  </div>
+
+  <div class="tc" id="tcWC">
+    <div id="twWC" style="flex:1;display:flex;flex-direction:column;overflow:hidden"><div class="empty"><div class="ico">📋</div><div class="msg">Calculate First</div></div></div>
+  </div>
+
+  <div class="tc" id="tcMWC">
+    <div id="twMWC" style="flex:1;display:flex;flex-direction:column;overflow:hidden"><div class="empty"><div class="ico">🏃</div><div class="msg">Calculate First</div></div></div>
+  </div>
+</div>
+</div><!-- /layout -->
+
+<div id="printPreview" class="print-preview">
+  <div class="print-preview-panel">
+    <div class="print-preview-toolbar">
+      <div class="print-preview-title" id="ppTitle">Print Preview</div>
+      <button class="pbtn ghost" style="width:auto;padding:5px 10px;font-size:9px;margin:0" onclick="closePrintPreview()">Close</button>
+      <button class="pbtn" style="width:auto;padding:5px 10px;font-size:9px;margin:0" onclick="printPreviewNow()">Print</button>
+    </div>
+    <div class="print-preview-framewrap">
+      <div id="ppCards" class="print-preview-cards"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// DRAG TABLES (Applied Ballistics G1 & G7)
+// ══════════════════════════════════════════════════════
+const G7=[
+  [0.000,0.1198],[0.050,0.1197],[0.100,0.1196],[0.150,0.1194],[0.200,0.1193],
+  [0.250,0.1194],[0.300,0.1194],[0.350,0.1194],[0.400,0.1193],[0.450,0.1193],
+  [0.500,0.1194],[0.550,0.1193],[0.600,0.1194],[0.650,0.1197],[0.700,0.1202],
+  [0.725,0.1207],[0.750,0.1215],[0.775,0.1226],[0.800,0.1242],[0.825,0.1266],
+  [0.850,0.1306],[0.875,0.1368],[0.900,0.1464],[0.925,0.1660],[0.950,0.2054],
+  [0.975,0.2993],[1.000,0.3803],[1.025,0.4015],[1.050,0.4043],[1.075,0.4034],
+  [1.100,0.4014],[1.125,0.3987],[1.150,0.3955],[1.200,0.3884],[1.250,0.3810],
+  [1.300,0.3732],[1.350,0.3657],[1.400,0.3580],[1.450,0.3508],[1.500,0.3440],
+  [1.600,0.3315],[1.700,0.3209],[1.800,0.3115],[1.900,0.3032],[2.000,0.2959],
+  [2.200,0.2850],[2.400,0.2788],[2.600,0.2760],[2.800,0.2748],[3.000,0.2743],
+  [3.500,0.2733],[4.000,0.2726],[5.000,0.2717]
+];
+const G1=[
+  [0.000,0.2629],[0.050,0.2558],[0.100,0.2487],[0.150,0.2413],[0.200,0.2336],
+  [0.250,0.2254],[0.300,0.2168],[0.350,0.2077],[0.400,0.1981],[0.450,0.1881],
+  [0.500,0.1786],[0.550,0.1695],[0.600,0.1610],[0.650,0.1533],[0.700,0.1466],
+  [0.725,0.1445],[0.750,0.1415],[0.775,0.1404],[0.800,0.1387],[0.825,0.1413],
+  [0.850,0.1465],[0.875,0.1965],[0.900,0.2945],[0.925,0.3836],[0.950,0.4043],
+  [0.975,0.4034],[1.000,0.4021],[1.025,0.4000],[1.050,0.3987],[1.075,0.3974],
+  [1.100,0.3950],[1.150,0.3901],[1.200,0.3839],[1.300,0.3681],[1.400,0.3432],
+  [1.500,0.3285],[1.600,0.3206],[1.700,0.3179],[1.800,0.3161],[2.000,0.3153],
+  [2.200,0.3144],[2.500,0.3117],[3.000,0.3065],[4.000,0.2983],[5.000,0.2909]
+];
+
+// ══════════════════════════════════════════════════════
+// PRESETS
+// ══════════════════════════════════════════════════════
+const BULLET_DB=[
+  // Hornady
+  {id:'hdy_224_73eldm',   name:'Hornady · .224 73gr ELD-M',         cal:0.224,wt:73,g7:0.200,g1:0.398,mv:2810},
+  {id:'hdy_224_75eldm',   name:'Hornady · .224 75gr ELD-M',         cal:0.224,wt:75,g7:0.230,g1:0.467,mv:2770},
+  {id:'hdy_224_80eldm',   name:'Hornady · .224 80gr ELD-M',         cal:0.224,wt:80,g7:0.248,g1:0.485,mv:2690},
+  {id:'hdy_224_88eldm',   name:'Hornady · .224 88gr ELD-M',         cal:0.224,wt:88,g7:0.275,g1:0.545,mv:2820},
+  {id:'hdy_243_103eldx',  name:'Hornady · .243 103gr ELD-X',        cal:0.243,wt:103,g7:0.256,g1:0.512,mv:2990},
+  {id:'hdy_243_108eldm',  name:'Hornady · .243 108gr ELD-M',        cal:0.243,wt:108,g7:0.271,g1:0.536,mv:2970},
+  {id:'hdy_243_110atip',  name:'Hornady · .243 110gr A-Tip',        cal:0.243,wt:110,g7:0.302,g1:0.604,mv:2930},
+  {id:'hdy_264_130eldm',  name:'Hornady · .264 130gr ELD-M',        cal:0.264,wt:130,g7:0.290,g1:0.552,mv:2890},
+  {id:'hdy_264_140eldm',  name:'Hornady · .264 140gr ELD-M',        cal:0.264,wt:140,g7:0.315,g1:0.646,mv:2710},
+  {id:'hdy_264_143eldx',  name:'Hornady · .264 143gr ELD-X',        cal:0.264,wt:143,g7:0.315,g1:0.625,mv:2720},
+  {id:'hdy_264_147eldm',  name:'Hornady · .264 147gr ELD-M',        cal:0.264,wt:147,g7:0.317,g1:0.697,mv:2695},
+  {id:'hdy_264_153atip',  name:'Hornady · .264 153gr A-Tip',        cal:0.264,wt:153,g7:0.378,g1:0.778,mv:2850},
+  {id:'hdy_284_162eldx',  name:'Hornady · .284 162gr ELD-X',        cal:0.284,wt:162,g7:0.315,g1:0.631,mv:2860},
+  {id:'hdy_284_175eldx',  name:'Hornady · .284 175gr ELD-X',        cal:0.284,wt:175,g7:0.347,g1:0.689,mv:2810},
+  {id:'hdy_284_180eldm',  name:'Hornady · .284 180gr ELD-M',        cal:0.284,wt:180,g7:0.398,g1:0.796,mv:2760},
+  {id:'hdy_308_178eldx',  name:'Hornady · .308 178gr ELD-X',        cal:0.308,wt:178,g7:0.273,g1:0.552,mv:2670},
+  {id:'hdy_308_195eldm',  name:'Hornady · .308 195gr ELD-M',        cal:0.308,wt:195,g7:0.387,g1:0.755,mv:2810},
+  {id:'hdy_308_208eldm',  name:'Hornady · .308 208gr ELD-M',        cal:0.308,wt:208,g7:0.345,g1:0.690,mv:2760},
+  {id:'hdy_308_225eldm',  name:'Hornady · .308 225gr ELD-M',        cal:0.308,wt:225,g7:0.391,g1:0.777,mv:2810},
+  {id:'hdy_338_285eldm',  name:'Hornady · .338 285gr ELD-M',        cal:0.338,wt:285,g7:0.391,g1:0.789,mv:2790},
+
+  // Sierra
+  {id:'sra_224_69smk',    name:'Sierra · .224 69gr MatchKing',      cal:0.224,wt:69,g7:0.165,g1:0.301,mv:2860},
+  {id:'sra_224_77smk',    name:'Sierra · .224 77gr MatchKing',      cal:0.224,wt:77,g7:0.190,g1:0.372,mv:2750},
+  {id:'sra_224_80smk',    name:'Sierra · .224 80gr MatchKing',      cal:0.224,wt:80,g7:0.217,g1:0.420,mv:2690},
+  {id:'sra_224_90smk',    name:'Sierra · .224 90gr MatchKing',      cal:0.224,wt:90,g7:0.270,g1:0.563,mv:2700},
+  {id:'sra_243_95smk',    name:'Sierra · .243 95gr MatchKing',      cal:0.243,wt:95,g7:0.242,g1:0.500,mv:3010},
+  {id:'sra_243_107smk',   name:'Sierra · .243 107gr MatchKing',     cal:0.243,wt:107,g7:0.270,g1:0.547,mv:2930},
+  {id:'sra_243_110smk',   name:'Sierra · .243 110gr MatchKing',     cal:0.243,wt:110,g7:0.312,g1:0.617,mv:2890,ab_g7:0.312,ab_g1:0.617,bcSource:'Applied Ballistics / Sierra 6mm 110gr MK'},
+  {id:'sra_264_130tmk',   name:'Sierra · .264 130gr Tipped MK',     cal:0.264,wt:130,g7:0.287,g1:0.560,mv:2860},
+  {id:'sra_264_142smk',   name:'Sierra · .264 142gr MatchKing',     cal:0.264,wt:142,g7:0.310,g1:0.595,mv:2740},
+  {id:'sra_264_150smk',   name:'Sierra · .264 150gr MatchKing',     cal:0.264,wt:150,g7:0.336,g1:0.713,mv:2700},
+  {id:'sra_264_160smk',   name:'Sierra · .264 160gr MatchKing',     cal:0.264,wt:160,g7:0.334,g1:0.620,mv:2640},
+  {id:'sra_284_150smk',   name:'Sierra · .284 150gr MatchKing',     cal:0.284,wt:150,g7:0.280,g1:0.535,mv:2920},
+  {id:'sra_284_175smk',   name:'Sierra · .284 175gr MatchKing',     cal:0.284,wt:175,g7:0.310,g1:0.608,mv:2830},
+  {id:'sra_284_183smk',   name:'Sierra · .284 183gr MatchKing',     cal:0.284,wt:183,g7:0.355,g1:0.707,mv:2780},
+  {id:'sra_308_155smk',   name:'Sierra · .308 155gr Palma MK',      cal:0.308,wt:155,g7:0.231,g1:0.450,mv:2920},
+  {id:'sra_308_168smk',   name:'Sierra · .308 168gr MatchKing',     cal:0.308,wt:168,g7:0.218,g1:0.462,mv:2710},
+  {id:'sra_308_175smk',   name:'Sierra · .308 175gr MatchKing',     cal:0.308,wt:175,g7:0.243,g1:0.505,mv:2650},
+  {id:'sra_308_190smk',   name:'Sierra · .308 190gr MatchKing',     cal:0.308,wt:190,g7:0.270,g1:0.533,mv:2580},
+  {id:'sra_308_20020x',   name:'Sierra · .308 200gr MatchKing',     cal:0.308,wt:200,g7:0.311,g1:0.620,mv:2790},
+  {id:'sra_308_230smk',   name:'Sierra · .308 230gr MatchKing',     cal:0.308,wt:230,g7:0.370,g1:0.743,mv:2720},
+  {id:'sra_338_300smk',   name:'Sierra · .338 300gr MatchKing',     cal:0.338,wt:300,g7:0.419,g1:0.768,mv:2750},
+
+  // Berger
+  {id:'brg_224_73bt',     name:'Berger · .224 73gr Target BT',      cal:0.224,wt:73,g7:0.180,g1:0.348,mv:2800},
+  {id:'brg_224_77otm',    name:'Berger · .224 77gr Tactical OTM',   cal:0.224,wt:77,g7:0.200,g1:0.381,mv:2760},
+  {id:'brg_224_80vld',    name:'Berger · .224 80gr Target VLD',     cal:0.224,wt:80,g7:0.220,g1:0.432,mv:2710},
+  {id:'brg_224_85hyb',    name:'Berger · .224 85gr LR Hybrid',      cal:0.224,wt:85,g7:0.270,g1:0.547,mv:2670},
+  {id:'brg_243_105hyb',   name:'Berger · .243 105gr Hybrid',        cal:0.243,wt:105,g7:0.270,g1:0.536,mv:2950},
+  {id:'brg_243_109lrht',  name:'Berger · .243 109gr LR Hybrid',     cal:0.243,wt:109,g7:0.294,g1:0.568,mv:2920},
+  {id:'brg_243_115vld',   name:'Berger · .243 115gr Target VLD',    cal:0.243,wt:115,g7:0.290,g1:0.585,mv:2870},
+  {id:'brg_264_130arh',   name:'Berger · .264 130gr AR Hybrid',     cal:0.264,wt:130,g7:0.274,g1:0.560,mv:2875},
+  {id:'brg_264_135ch',    name:'Berger · .264 135gr Classic Hunter',cal:0.264,wt:135,g7:0.285,g1:0.584,mv:2820},
+  {id:'brg_264_140hyb',   name:'Berger · .264 140gr Hybrid',        cal:0.264,wt:140,g7:0.305,g1:0.607,mv:2750},
+  {id:'brg_264_144lrht',  name:'Berger · .264 144gr LR Hybrid',     cal:0.264,wt:144,g7:0.336,g1:0.655,mv:2720},
+  {id:'brg_264_1535lrht', name:'Berger · .264 153.5gr LR Hybrid',   cal:0.264,wt:154,g7:0.355,g1:0.694,mv:2670},
+  {id:'brg_264_156eol',   name:'Berger · .264 156gr EOL Elite',     cal:0.264,wt:156,g7:0.351,g1:0.679,mv:2840},
+  {id:'brg_284_168vldh',  name:'Berger · .284 168gr VLD Hunting',   cal:0.284,wt:168,g7:0.316,g1:0.618,mv:2910},
+  {id:'brg_284_180hyb',   name:'Berger · .284 180gr Hybrid Target', cal:0.284,wt:180,g7:0.349,g1:0.680,mv:2870},
+  {id:'brg_284_184fo',    name:'Berger · .284 184gr F-Open Hybrid', cal:0.284,wt:184,g7:0.356,g1:0.695,mv:2820},
+  {id:'brg_284_190lrht',  name:'Berger · .284 190gr LR Hybrid',     cal:0.284,wt:190,g7:0.384,g1:0.751,mv:2790},
+  {id:'brg_284_195eol',   name:'Berger · .284 195gr EOL Elite',     cal:0.284,wt:195,g7:0.387,g1:0.755,mv:2790},
+  {id:'brg_308_175otm',   name:'Berger · .308 175gr OTM Tactical',  cal:0.308,wt:175,g7:0.263,g1:0.498,mv:2660},
+  {id:'brg_308_185jug',   name:'Berger · .308 185gr Juggernaut',    cal:0.308,wt:185,g7:0.283,g1:0.555,mv:2600},
+  {id:'brg_308_20020x',   name:'Berger · .308 200.20x Hybrid',      cal:0.308,wt:200,g7:0.321,g1:0.640,mv:2820},
+  {id:'brg_308_210vld',   name:'Berger · .308 210gr VLD Target',    cal:0.308,wt:210,g7:0.320,g1:0.621,mv:2750},
+  {id:'brg_308_215hyb',   name:'Berger · .308 215gr Hybrid',        cal:0.308,wt:215,g7:0.350,g1:0.691,mv:2860},
+  {id:'brg_308_230hyb',   name:'Berger · .308 230gr Hybrid',        cal:0.308,wt:230,g7:0.369,g1:0.743,mv:2790},
+  {id:'brg_338_300hyb',   name:'Berger · .338 300gr Hybrid OTM',    cal:0.338,wt:300,g7:0.419,g1:0.818,mv:2740},
+
+  // Nosler
+  {id:'nsl_224_70rdf',    name:'Nosler · .224 70gr RDF',            cal:0.224,wt:70,g7:0.211,g1:0.416,mv:2780},
+  {id:'nsl_224_77rdf',    name:'Nosler · .224 77gr RDF',            cal:0.224,wt:77,g7:0.218,g1:0.430,mv:2730},
+  {id:'nsl_243_105rdf',   name:'Nosler · .243 105gr RDF',           cal:0.243,wt:105,g7:0.275,g1:0.536,mv:2940},
+  {id:'nsl_243_115rdf',   name:'Nosler · .243 115gr RDF',           cal:0.243,wt:115,g7:0.290,g1:0.600,mv:2870},
+  {id:'nsl_264_129lrab',  name:'Nosler · .264 129gr ABLR',          cal:0.264,wt:129,g7:0.287,g1:0.561,mv:2820},
+  {id:'nsl_264_140rdf',   name:'Nosler · .264 140gr RDF',           cal:0.264,wt:140,g7:0.330,g1:0.658,mv:2720},
+  {id:'nsl_264_142lrab',  name:'Nosler · .264 142gr ABLR',          cal:0.264,wt:142,g7:0.330,g1:0.719,mv:2710},
+  {id:'nsl_284_168lrab',  name:'Nosler · .284 168gr ABLR',          cal:0.284,wt:168,g7:0.332,g1:0.652,mv:2850},
+  {id:'nsl_284_175lrab',  name:'Nosler · .284 175gr ABLR',          cal:0.284,wt:175,g7:0.340,g1:0.672,mv:2810},
+  {id:'nsl_308_175rdf',   name:'Nosler · .308 175gr RDF',           cal:0.308,wt:175,g7:0.276,g1:0.536,mv:2660},
+  {id:'nsl_308_190lrab',  name:'Nosler · .308 190gr ABLR',          cal:0.308,wt:190,g7:0.321,g1:0.640,mv:2590},
+  {id:'nsl_308_210rdf',   name:'Nosler · .308 210gr RDF',           cal:0.308,wt:210,g7:0.345,g1:0.690,mv:2760},
+  {id:'nsl_308_215rdf',   name:'Nosler · .308 215gr RDF',           cal:0.308,wt:215,g7:0.370,g1:0.730,mv:2820},
+
+  // DTAC / David Tubb
+  {id:'dtac_224_80vld',   name:'DTAC · .224 80gr VLD',              cal:0.224,wt:80,g7:0.225,g1:0.440,mv:2700},
+  {id:'dtac_243_105dtac', name:'DTAC · .243 105gr',                 cal:0.243,wt:105,g7:0.280,g1:0.560,mv:2930},
+  {id:'dtac_243_115dtac', name:'DTAC · .243 115gr',                 cal:0.243,wt:115,g7:0.300,g1:0.620,mv:2850},
+  {id:'dtac_264_135dtac', name:'DTAC · .264 135gr',                 cal:0.264,wt:135,g7:0.295,g1:0.590,mv:2800},
+  {id:'dtac_264_145dtac', name:'DTAC · .264 145gr',                 cal:0.264,wt:145,g7:0.320,g1:0.640,mv:2730},
+  {id:'dtac_308_175dtac', name:'DTAC · .308 175gr',                 cal:0.308,wt:175,g7:0.260,g1:0.505,mv:2640},
+  {id:'dtac_308_198dtac', name:'DTAC · .308 198gr',                 cal:0.308,wt:198,g7:0.330,g1:0.670,mv:2750},
+
+  // Barnes
+  {id:'brn_224_85mb',     name:'Barnes · .224 85gr Match Burner',   cal:0.224,wt:85,g7:0.243,g1:0.500,mv:2690},
+  {id:'brn_243_105mb',    name:'Barnes · .243 105gr Match Burner',  cal:0.243,wt:105,g7:0.271,g1:0.520,mv:2930},
+  {id:'brn_264_140mb',    name:'Barnes · .264 140gr Match Burner',  cal:0.264,wt:140,g7:0.311,g1:0.579,mv:2730},
+  {id:'brn_264_127lrx',   name:'Barnes · .264 127gr LRX BT',        cal:0.264,wt:127,g7:0.235,g1:0.468,mv:2860},
+  {id:'brn_284_168lrx',   name:'Barnes · .284 168gr LRX BT',        cal:0.284,wt:168,g7:0.265,g1:0.520,mv:2860},
+  {id:'brn_308_175lrx',   name:'Barnes · .308 175gr LRX BT',        cal:0.308,wt:175,g7:0.260,g1:0.508,mv:2720},
+  {id:'brn_308_212lrx',   name:'Barnes · .308 212gr LRX BT',        cal:0.308,wt:212,g7:0.310,g1:0.631,mv:2740},
+  {id:'brn_338_285lrx',   name:'Barnes · .338 285gr LRX BT',        cal:0.338,wt:285,g7:0.333,g1:0.575,mv:2760},
+
+  // Lapua
+  {id:'lap_264_136scenar',name:'Lapua · .264 136gr Scenar-L',       cal:0.264,wt:136,g7:0.270,g1:0.545,mv:2790},
+  {id:'lap_264_139scenar',name:'Lapua · .264 139gr Scenar',         cal:0.264,wt:139,g7:0.290,g1:0.615,mv:2760},
+  {id:'lap_264_144scenar',name:'Lapua · .264 144gr Scenar-L',       cal:0.264,wt:144,g7:0.318,g1:0.636,mv:2720},
+  {id:'lap_308_155scenar',name:'Lapua · .308 155gr Scenar',         cal:0.308,wt:155,g7:0.250,g1:0.508,mv:2860},
+  {id:'lap_308_167scenar',name:'Lapua · .308 167gr Scenar',         cal:0.308,wt:167,g7:0.255,g1:0.460,mv:2760},
+  {id:'lap_308_175scenar',name:'Lapua · .308 175gr Scenar',         cal:0.308,wt:175,g7:0.260,g1:0.505,mv:2680},
+  {id:'lap_338_300scenar',name:'Lapua · .338 300gr Scenar',         cal:0.338,wt:300,g7:0.368,g1:0.736,mv:2730},
+];
+
+function formatBulletLabel(name){
+  return name.replace(/\.264\b/g,'6.5mm');
+}
+
+const PRESETS=Object.fromEntries(BULLET_DB.map(b=>[
+  b.id,
+  {
+    name:formatBulletLabel(b.name).replace(' · ',' ').replace('★','').trim(),
+    cal:b.cal,wt:b.wt,g7:b.g7,g1:b.g1,mv:b.mv,
+    ab_g7:(b.ab_g7!=null?b.ab_g7:b.g7),
+    ab_g1:(b.ab_g1!=null?b.ab_g1:b.g1),
+    bcSource:b.bcSource||'Applied Ballistics / The Science of Accuracy'
+  }
+]));
+
+function calGroupLabel(cal){
+  const nominalMm={
+    '0.224':'5.56mm',
+    '0.243':'6mm',
+    '0.264':'6.5mm',
+    '0.284':'7mm',
+    '0.308':'7.62mm',
+    '0.338':'8.6mm',
+  };
+  const ck=Number(cal).toFixed(3);
+  return `${ck} cal (${nominalMm[ck]||`${(cal*25.4).toFixed(1)}mm`})`;
+}
+function calKey(cal){
+  return Number(cal).toFixed(3);
+}
+function bulletsForCal(cal){
+  const ck=calKey(cal);
+  return BULLET_DB.filter(b=>calKey(b.cal)===ck).sort((a,b)=>a.wt-b.wt);
+}
+
+function onCaliberChange(shouldLoad=true){
+  const calSel=document.getElementById('rifleCaliber');
+  const bulletSel=document.getElementById('preset');
+  if(!calSel||!bulletSel) return;
+  const prevBullet=bulletSel.value;
+  const list=bulletsForCal(calSel.value);
+  bulletSel.innerHTML='<option value="">— Select Bullet —</option>';
+  list.forEach(it=>{
+    const op=document.createElement('option');
+    op.value=it.id;
+    op.textContent=formatBulletLabel(it.name);
+    bulletSel.appendChild(op);
+  });
+  if(prevBullet&&list.some(b=>b.id===prevBullet)) bulletSel.value=prevBullet;
+  else if(list.length) bulletSel.value=list[0].id;
+  if(shouldLoad&&bulletSel.value) loadPreset();
+}
+
+function initPresetDropdown(defaultBulletId=''){
+  const calSel=document.getElementById('rifleCaliber');
+  if(!calSel) return;
+  const uniqueCals=[...new Set(BULLET_DB.map(b=>calKey(b.cal)))].map(Number).sort((a,b)=>a-b);
+  calSel.innerHTML='<option value="">— Select Caliber —</option>';
+  uniqueCals.forEach(cal=>{
+    const op=document.createElement('option');
+    op.value=calKey(cal);
+    op.textContent=calGroupLabel(cal);
+    calSel.appendChild(op);
+  });
+  const fallback=BULLET_DB.find(b=>b.id===defaultBulletId)||BULLET_DB[0];
+  if(!fallback) return;
+  calSel.value=calKey(fallback.cal);
+  onCaliberChange(false);
+  const bulletSel=document.getElementById('preset');
+  if(defaultBulletId&&bulletSel.querySelector(`option[value="${defaultBulletId}"]`)) bulletSel.value=defaultBulletId;
+  if(bulletSel.value) loadPreset();
+}
+
+function refreshBCFromSource(presetObj){
+  if(!presetObj) return;
+  const bcType=document.querySelector('input[name="bct"]:checked')?.value||'G7';
+  const bcVal=bcType==='G7' ? presetObj.ab_g7 : presetObj.ab_g1;
+  document.getElementById('bc').value=(bcVal!=null?bcVal:(bcType==='G7'?presetObj.g7:presetObj.g1));
+  const src=document.getElementById('bcSourceLbl');
+  if(src) src.textContent=presetObj.bcSource||'Applied Ballistics / The Science of Accuracy';
+}
+
+// ══════════════════════════════════════════════════════
+// PHYSICS
+// ISA constants: g/(R*L)=5.2561, g/(R*L)-1=4.2561, L/T0=2.2558e-5 m⁻¹
+// Verified: DA = 0 ft at 59°F / 29.921 inHg / 0% humidity ✓
+//           DA = elevation at any elevation with ISA temp & ISA press ✓
+// ══════════════════════════════════════════════════════
+function lerp(x,T){
+  if(x<=T[0][0])return T[0][1];
+  if(x>=T[T.length-1][0])return T[T.length-1][1];
+  let lo=0,hi=T.length-1;
+  while(hi-lo>1){const m=(lo+hi)>>1;T[m][0]<=x?lo=m:hi=m}
+  const t=(x-T[lo][0])/(T[hi][0]-T[lo][0]);
+  return T[lo][1]+t*(T[hi][1]-T[lo][1]);
+}
+
+function getAtmo(tF,pInHg,hPct){
+  const Tc=(tF-32)*5/9, Tk=Tc+273.15;
+  const P=pInHg*3386.389;
+  const es=611.2*Math.exp(17.67*Tc/(Tc+243.5));
+  const e=Math.max(0,(hPct/100)*es);
+  const rho=(P-0.378*e)/(287.05*Tk);
+  const c=20.05*Math.sqrt(Tk);
+  const rho0=1.225;
+  const ratio=Math.min(Math.max(rho/rho0,0.001),2.5);
+  const da_m=(1-Math.pow(ratio,1/4.2561))/2.2558e-5;
+  return{rho,rho0,c,rr:rho/rho0,da_ft:da_m*3.28084};
+}
+
+// ISA station pressure from elevation (ft)
+function isaPressure(elev_ft){
+  return 29.921*Math.pow(Math.max(1e-6,1-6.8755e-6*elev_ft),5.2561);
+}
+
+// Equivalent station pressure for a target DA (ft) at given temp & humidity
+function daToPress(da_ft,tF,hPct){
+  const Tc=(tF-32)*5/9,Tk=Tc+273.15;
+  const da_m=da_ft/3.28084;
+  const rho_t=1.225*Math.pow(Math.max(0.001,1-2.2558e-5*da_m),4.2561);
+  const es=611.2*Math.exp(17.67*Tc/(Tc+243.5));
+  const e=(hPct/100)*es;
+  return(rho_t*287.05*Tk+0.378*e)/3386.389;
+}
+
+// Wind drift from lag-time (Didion/JBM style):
+// D = W * (TOF - Range/MV), then convert inches -> MIL/MOA.
+function windDriftFromLag(rangeYds,tofSec,mvFps,windMph,windClock){
+  const fullValue=Math.sin((windClock/12)*2*Math.PI);
+  const crosswindFps=windMph*1.4666667*fullValue;
+  const rangeFt=rangeYds*3;
+  const lagSec=Math.max(0,tofSec-(rangeFt/Math.max(1,mvFps)));
+  const dIn=crosswindFps*12*lagSec;
+  const dMil=rangeYds>0?dIn/(rangeYds*0.036):0;
+  const dMoa=rangeYds>0?dIn/(rangeYds*0.01047):0;
+  return{dIn,dMil,dMoa};
+}
+
+// ══════════════════════════════════════════════════════
+// TRAJECTORY SOLVER (RK4, SI)
+// ══════════════════════════════════════════════════════
+function solve(p){
+  const{bc,bct,mv,sh_in,z_yds,w_mph,w_clk,tF,pInHg,hPct,max_yds,step_yds,wt_gr}=p;
+  const mvScale=(p&&isFinite(p.mvScale))?Math.max(0.85,Math.min(1.15,p.mvScale)):1;
+  const mvEff=mv*mvScale;
+  const bcScale=(p&&isFinite(p.bcScale))?Math.max(0.5,Math.min(1.5,p.bcScale)):1;
+  const BC=bc*703.0696*bcScale,v0=mvEff*0.3048,sh=sh_in*0.0254;
+  const zM=z_yds*0.9144,maxM=max_yds*0.9144,stepM=step_yds*0.9144;
+  const G=9.80665,DT=5e-4;
+  const cw=w_mph*0.44704*Math.sin((w_clk/12)*2*Math.PI);
+  const A=getAtmo(tF,pInHg,hPct);
+  const tbl=bct==='G7'?G7:G1;
+
+  function D(vx,vy){
+    const v=Math.sqrt(vx*vx+vy*vy)||1e-9;
+    const d=A.rr*v*v*lerp(v/A.c,tbl)/(2*BC);
+    return[-d*vx/v,-G-d*vy/v];
+  }
+  function rk4(x,y,vx,vy){
+    const[a1x,a1y]=D(vx,vy);
+    const[a2x,a2y]=D(vx+a1x*DT/2,vy+a1y*DT/2);
+    const[a3x,a3y]=D(vx+a2x*DT/2,vy+a2y*DT/2);
+    const[a4x,a4y]=D(vx+a3x*DT,  vy+a3y*DT);
+    return[
+      x+(vx+2*(vx+a2x*DT/2)+2*(vx+a3x*DT/2)+(vx+a4x*DT))/6*DT,
+      y+(vy+2*(vy+a2y*DT/2)+2*(vy+a3y*DT/2)+(vy+a4y*DT))/6*DT,
+      vx+(a1x+2*a2x+2*a3x+a4x)/6*DT,
+      vy+(a1y+2*a2y+2*a3y+a4y)/6*DT
+    ];
+  }
+
+  // Bisect for zero angle
+  function shootY(ang){
+    let x=0,y=0,vx=v0*Math.cos(ang),vy=v0*Math.sin(ang),t=0;
+    while(x<zM&&t<10){
+      const px=x,py=y;
+      [x,y,vx,vy]=rk4(x,y,vx,vy);t+=DT;
+      if(x>=zM){
+        const dx=x-px;
+        const a=dx>1e-9?Math.min(Math.max((zM-px)/dx,0),1):0;
+        return py+(y-py)*a;
+      }
+    }
+    return y;
+  }
+  let lo=-0.06,hi=0.06;
+  for(let i=0;i<64;i++){const m=(lo+hi)/2;shootY(m)<0?lo=m:hi=m}
+  const za=(lo+hi)/2;
+
+  const tgts=[];
+  for(let r=0;r<=maxM+stepM*0.01;r+=stepM)tgts.push(r);
+  let ti=0,x=0,y=0,vx=v0*Math.cos(za),vy=v0*Math.sin(za),t=0;
+  const results=[];
+
+  while(ti<tgts.length&&t<20){
+    const px=x,py=y,pvx=vx,pvy=vy,pt=t;
+    [x,y,vx,vy]=rk4(x,y,vx,vy);t+=DT;
+
+    while(ti<tgts.length&&x>=tgts[ti]){
+      const tx=tgts[ti];
+      const dx=x-px;
+      const a=dx>1e-9?Math.min(Math.max((tx-px)/dx,0),1):0;
+      const iy =py +(y -py )*a;
+      const ivx=pvx+(vx-pvx)*a;
+      const ivy=pvy+(vy-pvy)*a;
+      const it =pt +(t -pt )*a;
+
+      const v=Math.sqrt(ivx*ivx+ivy*ivy),vfps=v/0.3048,M=v/A.c;
+      const dropLOS=(sh*(1-tx/zM))-iy;
+      const dropIn=dropLOS/0.0254;
+      const rYds=tx/0.9144;
+      const mil=rYds>0?dropIn/(rYds*0.036):0;
+      const moa=rYds>0?dropIn/(rYds*0.01047):0;
+      const wd=windDriftFromLag(rYds,it,mvEff,w_mph,w_clk);
+      const wlb=wt_gr/7000,en=0.5*(wlb/32.174)*vfps*vfps;
+      results.push({rYds:Math.round(rYds),vfps:Math.round(vfps),en:Math.round(en),
+        dropIn,mil,moa,dIn:wd.dIn,dMil:wd.dMil,dMoa:wd.dMoa,tof:it,M,sub:M<1.0,
+        sdf:rYds>0?(rYds/100)-mil:null,
+        isZ:Math.abs(mil)<0.06&&Math.abs(rYds-z_yds)<step_yds*0.6});
+      ti++;
+    }
+  }
+  return{results,atmo:A};
+}
+
+// ══════════════════════════════════════════════════════
+// GLOBAL STATE
+// ══════════════════════════════════════════════════════
+let GR=null,GP=null,GA=null;
+let ACTIVE_TAB_ID='tcRC';
+const STATE_KEY='dope_card_buddy_state_v2';
+const STATE_FIELDS=['rifleCaliber','preset','bulletName','cal','weight','bc','mv','scopeHt','rangeUnit','zeroRange','maxRange','stepSize','trueRange','trueMil','trueRange2','trueMil2','trueDA','trueDaMilMap','windSpd','windClock','temp','tempUnit','elevation','pressure','humidity','da2'];
+
+function saveFormState(){
+  try{
+    const vals={};
+    STATE_FIELDS.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)vals[id]=el.value;
+    });
+    const bct=document.querySelector('input[name="bct"]:checked');
+    localStorage.setItem(STATE_KEY,JSON.stringify({vals,bct:bct?bct.value:'G7',activeTab:ACTIVE_TAB_ID}));
+  }catch(e){}
+}
+function loadFormState(){
+  try{
+    const raw=localStorage.getItem(STATE_KEY);
+    if(!raw)return false;
+    const s=JSON.parse(raw);
+    if(!s||!s.vals)return false;
+    if(s.vals.rifleCaliber){
+      const calSel=document.getElementById('rifleCaliber');
+      if(calSel){
+        calSel.value=s.vals.rifleCaliber;
+        onCaliberChange(false);
+      }
+    }
+    if(s.vals.preset){
+      const bulletSel=document.getElementById('preset');
+      if(bulletSel&&bulletSel.querySelector(`option[value="${s.vals.preset}"]`)){
+        bulletSel.value=s.vals.preset;
+      }
+    }
+    STATE_FIELDS.forEach(id=>{
+      if(id==='rifleCaliber'||id==='preset')return;
+      if(s.vals[id]==null)return;
+      const el=document.getElementById(id);
+      if(el)el.value=s.vals[id];
+    });
+    if(s.bct){
+      const r=document.querySelector(`input[name="bct"][value="${s.bct}"]`);
+      if(r)r.checked=true;
+    }
+    ACTIVE_TAB_ID=(s.activeTab&&document.getElementById(s.activeTab))?s.activeTab:'tcRC';
+    return true;
+  }catch(e){return false;}
+}
+function wireStatePersistence(){
+  STATE_FIELDS.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.addEventListener('input',saveFormState);
+    el.addEventListener('change',saveFormState);
+  });
+  document.querySelectorAll('input[name="bct"]').forEach(r=>r.addEventListener('change',saveFormState));
+}
+function resetSavedInputs(){
+  try{localStorage.removeItem(STATE_KEY);}catch(e){}
+  location.reload();
+}
+
+function fToC(v){return (v-32)*5/9;}
+function cToF(v){return (v*9/5)+32;}
+function getTempUnit(){
+  return document.getElementById('tempUnit')?.value||'F';
+}
+function getTempF(){
+  const raw=parseFloat(document.getElementById('temp')?.value);
+  if(Number.isNaN(raw)) return 59;
+  return getTempUnit()==='C' ? cToF(raw) : raw;
+}
+function getTempDisplayText(){
+  const raw=parseFloat(document.getElementById('temp')?.value);
+  const unit=getTempUnit();
+  const val=Number.isNaN(raw)?(unit==='C'?15:59):raw;
+  return `${Number.isInteger(val)?val:val.toFixed(1)}°${unit}`;
+}
+function normalizeMvValue(raw){
+  let v=parseFloat(raw);
+  if(!isFinite(v)) return 2744;
+  // Guard against accidental extra zeros (e.g. 22740 -> 2274).
+  while(v>5000) v=v/10;
+  if(v<500) v=500;
+  if(v>5000) v=5000;
+  return Math.round(v);
+}
+function getMvFps(commit=false){
+  const el=document.getElementById('mv');
+  const v=normalizeMvValue(el?.value);
+  if(commit&&el&&parseFloat(el.value)!==v) el.value=String(v);
+  return v;
+}
+function updateTempLabelAndBounds(){
+  const unit=getTempUnit();
+  const lbl=document.getElementById('tempLbl');
+  const inp=document.getElementById('temp');
+  if(lbl) lbl.textContent=`Temperature (°${unit})`;
+  if(!inp) return;
+  if(unit==='C'){
+    inp.min='-50'; inp.max='60'; inp.step='0.1';
+  }else{
+    inp.min='-60'; inp.max='130'; inp.step='1';
+  }
+}
+function onTempUnitChange(){
+  const inp=document.getElementById('temp');
+  const unitSel=document.getElementById('tempUnit');
+  if(!inp||!unitSel) return;
+  const prev=inp.dataset.unit||'F';
+  const next=unitSel.value;
+  const raw=parseFloat(inp.value);
+  if(!Number.isNaN(raw)&&prev!==next){
+    const conv=next==='C'?fToC(raw):cToF(raw);
+    inp.value=next==='C'?conv.toFixed(1):Math.round(conv).toString();
+  }
+  inp.dataset.unit=next;
+  updateTempLabelAndBounds();
+  if(GR&&GP) calculate();
+  else refreshAtmo();
+}
+function initTempUnit(){
+  const inp=document.getElementById('temp');
+  if(inp&&!inp.dataset.unit) inp.dataset.unit=getTempUnit();
+  updateTempLabelAndBounds();
+}
+function getRangeUnit(){
+  return document.getElementById('rangeUnit')?.value||'yds';
+}
+function rangeToYards(v){
+  return getRangeUnit()==='m' ? (v/0.9144) : v;
+}
+function rangeFromYards(v){
+  return getRangeUnit()==='m' ? (v*0.9144) : v;
+}
+function rangeHeaderShort(){
+  return getRangeUnit()==='m'?'M':'Yds';
+}
+function rangeUnitLabel(){
+  return getRangeUnit()==='m'?'m':'yds';
+}
+function fmtRange(vYds){
+  return Math.round(rangeFromYards(vYds));
+}
+function rangeIsMultiple(vYds,stepDisp){
+  const d=rangeFromYards(vYds);
+  if(stepDisp<=0)return false;
+  const q=d/stepDisp;
+  return Math.abs(q-Math.round(q))<0.02;
+}
+function updateRangeLabelsAndStepOptions(){
+  const u=rangeUnitLabel();
+  const z=document.getElementById('zeroRangeLbl'); if(z)z.textContent=`Zero Range (${u})`;
+  const m=document.getElementById('maxRangeLbl'); if(m)m.textContent=`Max Range (${u})`;
+  const s=document.getElementById('stepLbl'); if(s)s.textContent=`Step (${u})`;
+  const t1=document.getElementById('trueRangeLbl'); if(t1)t1.textContent=`True @ Range (${u})`;
+  const t2=document.getElementById('trueRange2Lbl'); if(t2)t2.textContent=`True @ Range 2 (${u})`;
+  const stepSel=document.getElementById('stepSize');
+  if(stepSel){
+    [...stepSel.options].forEach(op=>{
+      const n=parseFloat(op.value);
+      if(isFinite(n)) op.textContent=`${n} ${u}`;
+    });
+  }
+}
+function onRangeUnitChange(){
+  const sel=document.getElementById('rangeUnit');
+  if(!sel)return;
+  const prev=sel.dataset.unit||'yds';
+  const next=sel.value;
+  const cvt=(n)=>{
+    if(!isFinite(n)) return n;
+    return prev==='yds'&&next==='m' ? n*0.9144 : (prev==='m'&&next==='yds' ? n/0.9144 : n);
+  };
+  ['zeroRange','maxRange','trueRange','trueRange2'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    const v=parseFloat(el.value); if(!isFinite(v)) return;
+    el.value=String(Math.round(cvt(v)));
+  });
+  const stepSel=document.getElementById('stepSize');
+  if(stepSel){
+    const v=parseFloat(stepSel.value);
+    if(isFinite(v)){
+      let nv=Math.round(cvt(v));
+      const allowed=[10,25,50,100];
+      nv=allowed.reduce((best,x)=>Math.abs(x-nv)<Math.abs(best-nv)?x:best,allowed[0]);
+      stepSel.value=String(nv);
+    }
+  }
+  sel.dataset.unit=next;
+  updateRangeLabelsAndStepOptions();
+  saveFormState();
+  if(GR&&GP) calculate();
+}
+function initRangeUnit(){
+  const sel=document.getElementById('rangeUnit');
+  if(sel&&!sel.dataset.unit) sel.dataset.unit=sel.value||'yds';
+  updateRangeLabelsAndStepOptions();
+}
+
+// ══════════════════════════════════════════════════════
+// ATMOSPHERE — single update path, no split
+// refreshAtmo() is the ONLY function that writes to DA display cells.
+// It reads from the three input fields and writes to all 8 display targets at once.
+// ══════════════════════════════════════════════════════
+function refreshAtmo(){
+  const tF   = getTempF();
+  const pInHg= parseFloat(document.getElementById('pressure').value) || 29.921;
+  const hPct = parseFloat(document.getElementById('humidity').value) || 0;
+  const mvRaw = parseFloat(document.getElementById('mv').value);
+  const mv   = isFinite(mvRaw)?mvRaw:2744;
+
+  const A = getAtmo(tF, pInHg, hPct);
+  const da = Math.round(A.da_ft);
+  const daClass = Math.abs(da)<500 ? 'val da0' : Math.abs(da)<4000 ? 'val da1' : 'val da2';
+  const daStr = da + ' ft';
+
+  // ── sidebar da-box (4 cells)
+  const daEl = document.getElementById('daV');
+  daEl.className = daClass;
+  daEl.textContent = daStr;
+  document.getElementById('sosV').textContent  = Math.round(A.c/0.3048) + ' fps';
+  document.getElementById('rhoV').textContent  = A.rho.toFixed(4);
+  document.getElementById('rhoRV').textContent = A.rr.toFixed(4);
+
+  // ── header strip (4 cells) — same values, same source
+  const hdEl = document.getElementById('hdDA');
+  hdEl.textContent = daStr;
+  hdEl.style.color = Math.abs(da)<500 ? 'var(--green)' : Math.abs(da)<4000 ? 'var(--amb2)' : 'var(--red)';
+  document.getElementById('hdSOS').textContent  = Math.round(A.c/0.3048) + ' fps';
+  document.getElementById('hdRho').textContent  = A.rr.toFixed(4);
+  document.getElementById('hdMach').textContent = (mv*0.3048/A.c).toFixed(3);
+
+  // ── DA tab note
+  document.getElementById('daNote').textContent = daStr;
+}
+
+// When elevation changes: fill ISA pressure, then refresh all DA displays
+function onElevChange(){
+  const elev = parseFloat(document.getElementById('elevation').value) || 0;
+  document.getElementById('pressure').value = isaPressure(elev).toFixed(2);
+  refreshAtmo();
+}
+
+// ══════════════════════════════════════════════════════
+// PRESET LOADER
+// ══════════════════════════════════════════════════════
+function loadPreset(){
+  const k = document.getElementById('preset').value;
+  if(!k) return;
+  const p = PRESETS[k];
+  document.getElementById('bulletName').value = p.name;
+  document.getElementById('cal').value        = p.cal;
+  document.getElementById('weight').value     = p.wt;
+  document.getElementById('mv').value         = p.mv;
+  refreshBCFromSource(p);
+  refreshAtmo();
+  saveFormState();
+}
+document.querySelectorAll('input[name="bct"]').forEach(r=>r.addEventListener('change',()=>{
+  const k=document.getElementById('preset').value; if(!k) return;
+  const p=PRESETS[k];
+  refreshBCFromSource(p);
+  saveFormState();
+}));
+
+// ══════════════════════════════════════════════════════
+// CALCULATE
+// ══════════════════════════════════════════════════════
+function calculate(){
+  refreshAtmo();
+  const mvSanitized=getMvFps(true);
+  const trueRangeDisp=parseFloat(document.getElementById('trueRange').value);
+  const trueMil=parseFloat(document.getElementById('trueMil').value);
+  const trueRange2Disp=parseFloat(document.getElementById('trueRange2').value);
+  const trueMil2=parseFloat(document.getElementById('trueMil2').value);
+  const trueDA=parseFloat(document.getElementById('trueDA').value);
+  const trueDaMilMapRaw=document.getElementById('trueDaMilMap')?.value||'';
+  const daTruth=parseDaMilMap(trueDaMilMapRaw);
+  const zDisp=parseFloat(document.getElementById('zeroRange').value);
+  const maxDisp=parseFloat(document.getElementById('maxRange').value);
+  const stepDisp=parseFloat(document.getElementById('stepSize').value);
+  const trueRange=isFinite(trueRangeDisp)?rangeToYards(trueRangeDisp):NaN;
+  const trueRange2=isFinite(trueRange2Disp)?rangeToYards(trueRange2Disp):NaN;
+  const pBase={
+    bc:    parseFloat(document.getElementById('bc').value),
+    bct:   document.querySelector('input[name="bct"]:checked').value,
+    mv:    mvSanitized,
+    sh_in: parseFloat(document.getElementById('scopeHt').value),
+    z_yds: rangeToYards(zDisp),
+    w_mph: parseFloat(document.getElementById('windSpd').value),
+    w_clk: parseFloat(document.getElementById('windClock').value),
+    tF:    getTempF(),
+    tempDisp: getTempDisplayText(),
+    pInHg: parseFloat(document.getElementById('pressure').value),
+    hPct:  parseFloat(document.getElementById('humidity').value),
+    max_yds: rangeToYards(maxDisp),
+    step_yds: rangeToYards(stepDisp),
+    range_unit:getRangeUnit(),
+    step_disp:stepDisp,
+    wt_gr: parseFloat(document.getElementById('weight').value),
+  };
+  const pForTruing=isFinite(trueDA)
+    ? {...pBase,pInHg:daToPress(trueDA,pBase.tF,pBase.hPct)}
+    : pBase;
+  const truePts=[];
+  if(isFinite(trueRange)&&isFinite(trueMil)&&trueRange>0&&trueMil>0) truePts.push({range:trueRange,mil:trueMil});
+  if(isFinite(trueRange2)&&isFinite(trueMil2)&&trueRange2>0&&trueMil2>0) truePts.push({range:trueRange2,mil:trueMil2});
+  const mvBc=truePts.length>1 ? computeMvBcFromTruingPoints(pForTruing,truePts) : {mvScale:1,bcScale:computeBcScaleFromTruingPoints(pForTruing,truePts)};
+  const bcScale=mvBc.bcScale;
+  const mvScale=mvBc.mvScale;
+  const daScaleMap={};
+  if(truePts.length){
+    Object.keys(daTruth).forEach(daKey=>{
+      const da=parseFloat(daKey);
+      const obsMil=daTruth[daKey];
+      const pDa={...pBase,pInHg:daToPress(da,pBase.tF,pBase.hPct),mvScale};
+      daScaleMap[daKey]=computeBcScaleFromTruingPoints(pDa,[{range:truePts[0].range,mil:obsMil}]);
+    });
+  }
+  const p={...pBase,mvScale,bcScale,trueRange,trueMil,trueRange2,trueMil2,trueDA,daScaleMap};
+  const{results,atmo}=solveTrued(p,p);
+  GR=results; GP=p; GA=atmo;
+
+  const nm=document.getElementById('bulletName').value;
+  const wlb=p.wt_gr/7000, me=0.5*(wlb/32.174)*p.mv*p.mv;
+  document.getElementById('stB').textContent  = nm;
+  const mvTrue=Math.round(p.mv*(isFinite(p.mvScale)?p.mvScale:1));
+  document.getElementById('stMV').textContent = mvTrue+' fps'+(Math.abs((p.mvScale||1)-1)>0.001?` · Tru ${(p.mvScale||1).toFixed(3)}x`:'');
+  document.getElementById('stME').textContent = Math.round(me)+' ft·lb';
+  document.getElementById('stZ').textContent  = fmtRange(p.z_yds)+' '+rangeUnitLabel();
+  const truTag=Math.abs((p.bcScale||1)-1)>0.001
+    ? ` · Tru ${p.bcScale.toFixed(3)}x${isFinite(p.trueDA)?` @${Math.round(p.trueDA)}ft`:''}`
+    : '';
+  const curveTag=(truePts.length>1)?' · 2PT':'';
+  const daTag=Object.keys(p.daScaleMap||{}).length?` · DA Tru ${Object.keys(p.daScaleMap).length}`:'';
+  document.getElementById('stBC').textContent = p.bc.toFixed(3)+' '+p.bct+truTag+curveTag+daTag;
+  const sub=results.find(r=>r.sub&&r.rYds>p.z_yds);
+  document.getElementById('stSub').textContent= sub ? (fmtRange(sub.rYds)+' '+rangeUnitLabel()) : ('> '+fmtRange(p.max_yds)+' '+rangeUnitLabel());
+
+  renderRC(results,p);
+  renderSDF(results,p);
+  renderSDFWC(results,p);
+  renderDA(p);
+  renderMovers(results,p);
+  renderWC(results,p);
+  renderMoversWC(results,p);
+  saveFormState();
+}
+
+// ══════════════════════════════════════════════════════
+// TAB SWITCH
+// ══════════════════════════════════════════════════════
+function switchTab(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById(id).classList.add('on');
+  ACTIVE_TAB_ID=id;
+  saveFormState();
+}
+function setActiveTabUI(id){
+  const target=document.getElementById(id)||document.getElementById('tcRC');
+  const tab=[...document.querySelectorAll('.tab')].find(t=>(t.getAttribute('onclick')||'').includes(`'${target.id}'`));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+  if(tab)tab.classList.add('on');
+  target.classList.add('on');
+  ACTIVE_TAB_ID=target.id;
+}
+const f=(n,d=2,s=false)=>{if(n==null||isNaN(n))return'—';const r=n.toFixed(d);return s&&n>0?'+'+r:r};
+
+function getMilAtRange(results,rangeYds){
+  if(!results||!results.length||!isFinite(rangeYds)) return null;
+  const range=Math.max(0,rangeYds);
+  let lo=null,hi=null;
+  for(let i=0;i<results.length;i++){
+    const r=results[i];
+    if(r.rYds===range) return r.mil;
+    if(r.rYds<range) lo=r;
+    if(r.rYds>range){hi=r;break;}
+  }
+  if(!lo&&hi) return hi.mil;
+  if(lo&&!hi) return lo.mil;
+  if(!lo||!hi||hi.rYds===lo.rYds) return null;
+  const t=(range-lo.rYds)/(hi.rYds-lo.rYds);
+  return lo.mil+(hi.mil-lo.mil)*t;
+}
+
+function computeBcScaleFromTruing(baseP,trueRange,trueMil){
+  if(!isFinite(trueRange)||!isFinite(trueMil)||trueRange<=0||trueMil<=0) return 1;
+  const probe=s=>{
+    const sol=solve({...baseP,bcScale:s});
+    const m=getMilAtRange(sol.results,trueRange);
+    return isFinite(m)?m:null;
+  };
+  let lo=0.6,hi=1.4;
+  let mLo=probe(lo),mHi=probe(hi);
+  if(!isFinite(mLo)||!isFinite(mHi)) return 1;
+  if(!((mLo>=trueMil&&mHi<=trueMil)||(mLo<=trueMil&&mHi>=trueMil))){
+    return 1;
+  }
+  for(let i=0;i<26;i++){
+    const mid=(lo+hi)/2;
+    const mMid=probe(mid);
+    if(!isFinite(mMid)) break;
+    if((mLo>=trueMil&&mMid>=trueMil)||(mLo<=trueMil&&mMid<=trueMil)){
+      lo=mid; mLo=mMid;
+    }else{
+      hi=mid; mHi=mMid;
+    }
+  }
+  return (lo+hi)/2;
+}
+function computeBcScaleFromTruingPoints(baseP,points){
+  const pts=(points||[]).filter(p=>isFinite(p?.range)&&isFinite(p?.mil)&&p.range>0&&p.mil>0);
+  if(!pts.length) return 1;
+  if(pts.length===1) return computeBcScaleFromTruing(baseP,pts[0].range,pts[0].mil);
+  const err=s=>{
+    const sol=solve({...baseP,bcScale:s});
+    let sum=0;
+    for(const p of pts){
+      const pred=getMilAtRange(sol.results,p.range);
+      if(!isFinite(pred)) continue;
+      const d=pred-p.mil;
+      sum+=d*d;
+    }
+    return sum;
+  };
+  let lo=0.6,hi=1.4;
+  for(let i=0;i<34;i++){
+    const m1=lo+(hi-lo)/3;
+    const m2=hi-(hi-lo)/3;
+    if(err(m1)<=err(m2)) hi=m2;
+    else lo=m1;
+  }
+  const cands=[0.6,1.0,1.4,(lo+hi)/2,lo,hi];
+  let best=1,bestErr=Infinity;
+  cands.forEach(c=>{
+    const e=err(c);
+    if(e<bestErr){bestErr=e;best=c;}
+  });
+  return Math.max(0.5,Math.min(1.5,best));
+}
+function computeMvBcFromTruingPoints(baseP,points){
+  const pts=(points||[]).filter(p=>isFinite(p?.range)&&isFinite(p?.mil)&&p.range>0&&p.mil>0);
+  if(pts.length<2) return {mvScale:1,bcScale:computeBcScaleFromTruingPoints(baseP,pts)};
+  const err=(mvS,bcS)=>{
+    const sol=solve({...baseP,mvScale:mvS,bcScale:bcS});
+    let sum=0;
+    for(const p of pts){
+      const pred=getMilAtRange(sol.results,p.range);
+      if(!isFinite(pred)) continue;
+      const d=pred-p.mil;
+      sum+=d*d;
+    }
+    return sum;
+  };
+  let best={mvScale:1,bcScale:1,e:Infinity};
+  for(let mvS=0.92;mvS<=1.08;mvS+=0.01){
+    for(let bcS=0.70;bcS<=1.30;bcS+=0.01){
+      const e=err(mvS,bcS);
+      if(e<best.e) best={mvScale:mvS,bcScale:bcS,e};
+    }
+  }
+  let mvLo=Math.max(0.85,best.mvScale-0.02),mvHi=Math.min(1.15,best.mvScale+0.02);
+  let bcLo=Math.max(0.5,best.bcScale-0.05),bcHi=Math.min(1.5,best.bcScale+0.05);
+  for(let pass=0;pass<2;pass++){
+    for(let mvS=mvLo;mvS<=mvHi+1e-9;mvS+=0.0025){
+      for(let bcS=bcLo;bcS<=bcHi+1e-9;bcS+=0.005){
+        const e=err(mvS,bcS);
+        if(e<best.e) best={mvScale:mvS,bcScale:bcS,e};
+      }
+    }
+    mvLo=Math.max(0.85,best.mvScale-0.01); mvHi=Math.min(1.15,best.mvScale+0.01);
+    bcLo=Math.max(0.5,best.bcScale-0.03);   bcHi=Math.min(1.5,best.bcScale+0.03);
+  }
+  return {mvScale:best.mvScale,bcScale:best.bcScale};
+}
+function parseDaMilMap(raw){
+  const out={};
+  if(!raw||typeof raw!=='string') return out;
+  const re=/([+-]?\d+)\s*:\s*([+-]?\d*\.?\d+)/g;
+  let m;
+  while((m=re.exec(raw))!==null){
+    const da=Math.round(parseFloat(m[1]));
+    const mil=parseFloat(m[2]);
+    if(isFinite(da)&&isFinite(mil)&&mil>0) out[String(da)]=mil;
+  }
+  return out;
+}
+function getDaSpecificBcScale(p,da){
+  const base=(p&&isFinite(p.bcScale))?p.bcScale:1;
+  const map=(p&&p.daScaleMap)?p.daScaleMap:{};
+  const exact=map[String(Math.round(da))];
+  if(isFinite(exact)) return exact;
+  const pts=Object.keys(map)
+    .map(k=>({da:parseFloat(k),s:parseFloat(map[k])}))
+    .filter(o=>isFinite(o.da)&&isFinite(o.s))
+    .sort((a,b)=>a.da-b.da);
+  if(!pts.length) return base;
+  if(pts.length===1) return pts[0].s;
+  if(da<=pts[0].da) return pts[0].s;
+  if(da>=pts[pts.length-1].da) return pts[pts.length-1].s;
+  for(let i=1;i<pts.length;i++){
+    const lo=pts[i-1],hi=pts[i];
+    if(da<=hi.da){
+      const t=(da-lo.da)/Math.max(1e-9,(hi.da-lo.da));
+      return lo.s+(hi.s-lo.s)*t;
+    }
+  }
+  return base;
+}
+function solveTrued(pSolve,pRef){
+  return solve(pSolve);
+}
+
+// ══════════════════════════════════════════════════════
+// TAB 1 — RANGE CARD
+// ══════════════════════════════════════════════════════
+function renderRC(results,p){
+  const rHdr=rangeHeaderShort();
+  let h=`<table><thead><tr>
+    <th>Range<br>${rHdr}</th><th class="ta">Vel<br>fps</th><th class="ta">Energy<br>ft·lb</th>
+    <th>Drop<br>in</th><th class="tg">Drop<br>MOA</th><th class="tb">Drop<br>MIL</th>
+    <th>W${p.w_mph}mph<br>in</th><th class="tg">W${p.w_mph}mph<br>MOA</th><th class="tb">W${p.w_mph}mph<br>MIL</th>
+    <th>Spin<br>MIL</th><th>TOF<br>sec</th><th>Mach</th>
+  </tr></thead><tbody>`;
+  results.forEach(r=>{
+    const rc=r.isZ?'rzero':r.sub?'rsub':'', dc=r.dropIn<0?'cd':'';
+    h+=`<tr class="${rc}">
+      <td>${fmtRange(r.rYds)}${r.isZ?' ★':''}</td>
+      <td class="ca">${r.vfps}</td><td class="ca">${r.en}</td>
+      <td class="${dc}">${f(r.dropIn,2)}"</td>
+      <td class="cg ${dc}">${f(r.moa,1)}</td><td class="cm ${dc}">${f(r.mil,2)}</td>
+      <td>${f(r.dIn,2)}"</td><td class="cg">${f(r.dMoa,1)}</td><td class="cm">${f(r.dMil,2)}</td>
+      <td style="color:#8899aa">${r.mil>0?f(r.mil*0.01,3):'—'}</td>
+      <td>${r.tof.toFixed(3)}</td><td>${r.M.toFixed(2)}</td>
+    </tr>`;
+  });
+  document.getElementById('twRC').innerHTML=h+`</tbody></table>`;
+}
+
+// ══════════════════════════════════════════════════════
+// TAB 2 — SPEED DROP FACTOR
+// ══════════════════════════════════════════════════════
+function renderSDF(results,p){
+  const sdfFor=r=>((rangeFromYards(r.rYds)/100)-r.mil);
+  const dvs=[-200,-100,-50,50,100,200];
+  const alt={};
+  dvs.forEach(dv=>{try{const{results:r2}=solveTrued({...p,mv:p.mv+dv},p);alt[dv]=r2}catch(e){}});
+  const recDial=getRecommendedSdfDial(results);
+
+  let h=`<div style="padding:7px 14px;font-size:10px;color:var(--txt2);background:var(--s2);border-bottom:1px solid var(--brdr)">
+    SDF = (Range/100) − Elevation(MIL) · Elevation(MIL) ≈ (Range/100) − SDF ·
+    Recommended turret dial-down (constant): <b style="color:var(--amb2)">${recDial!=null?recDial.toFixed(2)+' MIL':'—'}</b>
+    <span style="color:var(--txt2)">(weighted to 100-yard marks for even-number holds)</span>
+  </div>
+  <table><thead><tr>
+    <th>Range</th><th class="tb">MIL Nom</th><th>Dial-Down<br>MIL (SDF)</th><th class="tg">Hold w/Dial<br>MIL</th><th>Even Err</th>
+    <th class="tr">−200fps</th><th class="tr">−100fps</th><th style="color:#ffaaaa">−50fps</th>
+    <th style="color:#aaffaa">+50fps</th><th class="tg">+100fps</th><th class="tg">+200fps</th>
+  </tr></thead><tbody>`;
+
+  results.filter(r=>r.rYds>0).forEach(r=>{
+    const get=dv=>{const a=alt[dv];if(!a)return null;const m=a.find(a=>a.rYds===r.rYds);return m?m.mil-r.mil:null};
+    const holdWithDial=(recDial!=null)?(r.mil+recDial):null;
+    const evenMil=rangeFromYards(r.rYds)/100;
+    const evenErr=(holdWithDial!=null)?(holdWithDial-evenMil):null;
+    const holdCls=(evenErr!=null&&Math.abs(evenErr)<=0.08)?'cg':(evenErr!=null?'cr':'cd');
+    h+=`<tr class="${r.sub?'rsub':''}">
+      <td>${fmtRange(r.rYds)}</td><td class="cm">${f(r.mil,2)}</td>
+      <td>${sdfFor(r).toFixed(2)}</td><td class="${holdCls}">${f(holdWithDial,2)}</td><td class="${holdCls}">${f(evenErr,2,true)}</td>
+      ${dvs.map(dv=>{const d=get(dv);return`<td class="${d!=null?(d*(dv<0?1:-1)>0?'cr':'cg'):'cd'}">${f(d,2,true)}</td>`}).join('')}
+    </tr>`;
+  });
+  document.getElementById('twSDF').innerHTML=h+`</tbody></table>`;
+}
+
+function getRecommendedSdfDial(results){
+  const sdfFor=r=>((rangeFromYards(r.rYds)/100)-r.mil);
+  // Favor 100-yard marks so the dial-down maps closer to 100=1, 200=2, etc.
+  const keyBand=(results||[]).filter(r=>
+    rangeFromYards(r.rYds)>=100&&rangeFromYards(r.rYds)<=1200&&rangeIsMultiple(r.rYds,100)&&!r.sub&&isFinite(sdfFor(r))
+  );
+  if(keyBand.length) return keyBand.reduce((s,r)=>s+sdfFor(r),0)/keyBand.length;
+  const fallback=(results||[]).filter(r=>rangeFromYards(r.rYds)>=300&&rangeFromYards(r.rYds)<=1200&&!r.sub&&isFinite(sdfFor(r)));
+  return fallback.length?fallback.reduce((s,r)=>s+sdfFor(r),0)/fallback.length:null;
+}
+function renderSDFWC(results,p){
+  const src=(GR&&Array.isArray(GR)&&GR.length)?GR:results;
+  const recDial=getRecommendedSdfDial(src);
+  const nm=document.getElementById('bulletName').value;
+  const wcStepSel=parseFloat(document.getElementById('stepSize')?.value)||25;
+  const dataRaw=src.filter(r=>{
+    const rd=rangeFromYards(r.rYds);
+    if(rd<=0) return false;
+    if(wcStepSel!==10) return true;
+    if(rd<=200) return rangeIsMultiple(r.rYds,25);
+    return rangeIsMultiple(r.rYds,10);
+  });
+  const data=dataRaw;
+  const colCount=Math.min(4,Math.max(2,Math.ceil(data.length/12)));
+  const pc=Math.ceil(data.length/colCount);
+  const cols=Array.from({length:colCount},(_,i)=>data.slice(i*pc,(i+1)*pc));
+  const colsHTML=cols.map(col=>{
+    const rws=col.map(r=>{
+      const bc=wcBandColor(r.rYds,p.z_yds);
+      return '<div class="wc-dr'+(r.sub?' sub':'')+'">'
+        +'<span style="color:'+bc+'">'+fmtRange(r.rYds)+'</span>'
+        +'<span style="color:'+bc+'">'+f(r.mil,2)+'</span>'
+        +'<span style="color:'+bc+'">'+f((rangeFromYards(r.rYds)/100)-r.mil,2)+'</span>'
+        +'</div>';
+    }).join('');
+    return '<div class="wc-dcol"><div class="wc-sch"><span>Dist</span><span>MIL</span><span>SDF</span></div><div class="wc-drows">'+rws+'</div></div>';
+  }).join('');
+
+  window._sdfwcData={cards:[{index:0}]};
+  document.getElementById('twSDFWC').innerHTML=
+    '<div class="wc-toolbar">'
+    +'<span class="wc-toolbar-lbl">3×5″ SDF Coach</span>'
+    +'<button class="pbtn" onclick="printSdfCard(0)">&#128424; Print SDF Card</button>'
+    +'</div>'
+    +'<div class="wc-scroll">'
+      +'<div class="wc-card-wrap" id="sdfc-card-0">'
+        +'<div class="wc-card-sizelbl"><b>5″ × 3″</b> &nbsp; SDF Turret Card'
+        +'&nbsp;&nbsp;<button class="pbtn" style="font-size:8px;padding:3px 10px" onclick="printSdfCard(0)">&#128424; Print</button></div>'
+        +'<div class="wc-card wc-card-sdf">'
+          +'<div class="wc-h1"><div>'+nm+'</div><div style="text-align:center">Speed Drop Factor Coach</div><div style="text-align:right">Zero: '+fmtRange(p.z_yds)+' '+rangeUnitLabel()+'</div></div>'
+          +'<div class="wc-h2">'
+            +'<div class="c">Turret Dial-Down: <span class="v">'+(recDial!=null?recDial.toFixed(2):'—')+' MIL</span></div>'
+            +'<div class="c">SDF = (R/100)-MIL</div>'
+            +'<div class="c">MIL = (R/100)-SDF</div>'
+            +'<div class="c">MV: <span class="v">'+p.mv+' fps</span></div>'
+            +'<div class="c">BC: <span class="v">'+p.bc.toFixed(3)+' '+p.bct+'</span></div>'
+            +'<div class="c">Rows: <span class="v">'+data.length+'</span></div>'
+          +'</div>'
+          +'<div class="wc-data" style="grid-template-columns:repeat('+colCount+',1fr)">'+colsHTML+'</div>'
+        +'</div>'
+      +'</div>'
+    +'</div>';
+}
+
+// ══════════════════════════════════════════════════════
+// TAB 3 — DENSITY ALTITUDE
+// ══════════════════════════════════════════════════════
+function renderDA(p){
+  const nomDA=GA.da_ft;
+  const das=[-2000,0,2000,4000,6000,8000,10000];
+  const sols={};
+  das.forEach(da=>{
+    try{
+      const bcScale=getDaSpecificBcScale(p,da);
+      const{results}=solveTrued({...p,pInHg:daToPress(da,p.tF,p.hPct),bcScale},p);
+      sols[da]=results;
+    }catch(e){}
+  });
+  const ni=das.reduce((bi,da,i)=>Math.abs(da-nomDA)<Math.abs(das[bi]-nomDA)?i:bi,0);
+
+  let h=`<table><thead><tr><th>Range<br>${rangeHeaderShort()}</th>`;
+  das.forEach((da,i)=>{
+    const iN=i===ni;
+    h+=`<th class="${iN?'tg':'tb'}" style="${iN?'background:rgba(61,201,90,.08)':''}">${da>=0?'+'+da:da} ft${iN?' ★':''}</th>`;
+  });
+  h+=`<th>Spin<br>MIL</th></tr></thead><tbody>`;
+
+  GR.filter(r=>r.rYds>0).forEach(r=>{
+    h+=`<tr class="${r.isZ?'rzero':r.sub?'rsub':''}"><td>${fmtRange(r.rYds)}</td>`;
+    das.forEach((da,i)=>{
+      const m=sols[da]?sols[da].find(s=>s.rYds===r.rYds):null;
+      const iN=i===ni;
+      h+=`<td class="${iN?'cg':'cm'}" style="${iN?'background:rgba(61,201,90,.04)':''}">${m?f(m.mil,2):'—'}</td>`;
+    });
+    h+=`<td style="color:#8899aa">${r.mil>0?f(r.mil*0.01,3):'—'}</td></tr>`;
+  });
+  document.getElementById('twDA').innerHTML=h+`</tbody></table>`;
+}
+
+// ══════════════════════════════════════════════════════
+// TAB 4 — MOVERS
+// ══════════════════════════════════════════════════════
+function renderMovers(results,p){
+  // Always use the latest solved ballistic table so Movers TOF stays in sync
+  // with the app's core trajectory calculation.
+  const src=(GR&&Array.isArray(GR)&&GR.length)?GR:results;
+  const spd=[1,2,3,4,5,6,8,10];
+  let h=`<div class="msec">Lead in MIL — Sustained Lead Method</div>
+  <div style="padding:5px 14px;font-size:10px;color:var(--txt2);background:var(--s2);border-bottom:1px solid var(--brdr)">Lead = TOF × Speed(in/s) ÷ (Range × 0.036)</div>
+  <table><thead><tr><th>Range</th><th class="ta">TOF</th>`;
+  spd.forEach(s=>h+=`<th class="tg">${s}mph MIL</th>`);
+  h+=`</tr></thead><tbody>`;
+  src.filter(r=>r.rYds>0).forEach(r=>{
+    h+=`<tr class="${r.isZ?'rzero':r.sub?'rsub':''}"><td>${fmtRange(r.rYds)}</td><td class="ca">${r.tof.toFixed(3)}</td>`;
+    spd.forEach(s=>h+=`<td class="cg">${f(r.rYds>0?r.tof*(s*17.6)/(r.rYds*0.036):0,2)}</td>`);
+    h+=`</tr>`;
+  });
+  h+=`</tbody></table>
+  <div class="msec" style="border-top:3px solid var(--brdr)">Angular Velocity MIL/sec — Track Method</div>
+  <div style="padding:5px 14px;font-size:10px;color:var(--txt2);background:var(--s2);border-bottom:1px solid var(--brdr)">How fast target moves in optic = Speed(in/s) ÷ (Range × 0.036)</div>
+  <table><thead><tr><th>Range</th>`;
+  spd.forEach(s=>h+=`<th class="tb">${s}mph MIL/s</th>`);
+  h+=`</tr></thead><tbody>`;
+  src.filter(r=>r.rYds>0).forEach(r=>{
+    h+=`<tr class="${r.sub?'rsub':''}"><td>${fmtRange(r.rYds)}</td>`;
+    spd.forEach(s=>h+=`<td class="cm">${f(r.rYds>0?(s*17.6)/(r.rYds*0.036):0,3)}</td>`);
+    h+=`</tr>`;
+  });
+  document.getElementById('twMV').innerHTML=`<div class="movers-out" style="overflow:auto">${h}</tbody></table></div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// HEAT-MAP COLOR UTILITY
+// ══════════════════════════════════════════════════════
+function lerpHex(c1,c2,t){
+  const h=c=>[parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)];
+  const[r1,g1,b1]=h(c1),[r2,g2,b2]=h(c2);
+  const r=Math.round(r1+(r2-r1)*t),g=Math.round(g1+(g2-g1)*t),b=Math.round(b1+(b2-b1)*t);
+  return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function milColor(mil){
+  const m=Math.abs(mil);
+  const k=[[0.05,'#ffffff'],[0.4,'#fffee8'],[0.8,'#fffd99'],[1.4,'#ffef40'],
+            [2.2,'#ffcc00'],[3.2,'#ff9900'],[5.0,'#ff5500'],[7.5,'#ee1800'],[12,'#cc0000']];
+  if(m<=k[0][0])return k[0][1];
+  for(let i=1;i<k.length;i++){
+    if(m<=k[i][0]){const t=(m-k[i-1][0])/(k[i][0]-k[i-1][0]);return lerpHex(k[i-1][1],k[i][1],t);}
+  }
+  return'#aa0000';
+}
+function milTxt(mil){return Math.abs(mil)>9?'#fff':'#000';}
+function wcKeyRange(range, zero){
+  const z=Math.round(zero||100);
+  if(range===z) return true;
+  return range>z && ((range-z)%300===0);
+}
+function wcBandColor(range,zero){
+  const z=Math.round(zero||100);
+  const palette=['#ff0033','#0066ff','#00b300','#ff7a00','#cc00ff','#00a8ff','#ff1493','#00c26e'];
+  const idx=Math.max(0,Math.floor((range-z)/100))%palette.length;
+  return palette[idx];
+}
+
+// ══════════════════════════════════════════════════════
+// TAB 5 — WRIST COACH
+// Card 1: current DA.  Card 2: user-chosen alternate DA.
+// ══════════════════════════════════════════════════════
+function renderWC(results,p){
+  const nm  =document.getElementById('bulletName').value;
+  const calcDa=Math.round(GA?.da_ft||0);
+  const userDaRaw=parseFloat(document.getElementById('da2')?.value);
+  const userDa=Number.isFinite(userDaRaw)?Math.round(userDaRaw):null;
+  const daTabTargets=[-2000,0,2000,4000,6000,8000,10000];
+  // Include all DA tab values, the live calculated DA, and the user Card 2 DA.
+  const daSet=new Set([calcDa,...daTabTargets]);
+  if(userDa!=null) daSet.add(userDa);
+  const daSorted=[...daSet].sort((a,b)=>a-b);
+  const wcDaTargets=[calcDa,...daSorted.filter(da=>da!==calcDa)];
+  // Wrist-card step follows the sidebar Step selector, with an optional finer
+  // 10-yard cadence beyond 200 yards when step=10.
+  const wcStepSel=parseFloat(document.getElementById('stepSize')?.value)||25;
+  const wcStepYds=rangeToYards(wcStepSel===10?5:wcStepSel);
+  function getWristDataRows(rows){
+    return rows.filter(r=>{
+      const rd=rangeFromYards(r.rYds);
+      if(rd<rangeFromYards(p.z_yds)) return false;
+      if(wcStepSel!==10) return true;
+      if(rd<=200) return rangeIsMultiple(r.rYds,25);
+      return rangeIsMultiple(r.rYds,10);
+    });
+  }
+  function splitColsEven(data,colCount){
+    const pc=Math.ceil(data.length/colCount);
+    const cols=Array.from({length:colCount},(_,i)=>{
+      const col=data.slice(i*pc,(i+1)*pc);
+      while(col.length<pc) col.push(null);
+      return col;
+    });
+    return{cols,pc};
+  }
+  const baseCards=wcDaTargets.map((targetDa,idx)=>{
+    let cardResults=results;
+    let press=p.pInHg;
+    let solvedDa=targetDa;
+    let sos=Math.round((GA?.c||340.3)/0.3048);
+    try{
+      press=daToPress(targetDa,p.tF,p.hPct);
+      const bcScale=getDaSpecificBcScale(p,targetDa);
+      const sol=solveTrued({...p,pInHg:press,step_yds:wcStepYds,bcScale},p);
+      cardResults=sol.results;
+      solvedDa=Math.round(sol.atmo.da_ft);
+      sos=Math.round(sol.atmo.c/0.3048);
+    }catch(e){}
+    return{
+      index:idx,
+      targetDa,
+      solvedDa,
+      label:(targetDa>=0?'+':'')+targetDa+' FT'
+        +(targetDa===calcDa?' · CALC':'')
+        +(userDa!=null&&targetDa===userDa?' · USER':''),
+      press,
+      sos,
+      results:cardResults
+    };
+  });
+  const expanded=[];
+  baseCards.forEach(base=>{
+    const data=getWristDataRows(base.results);
+    if(wcStepSel===10){
+      // Split at 900, then keep both cards visually even.
+      const colCount=4;
+      const part1=data.filter(r=>rangeFromYards(r.rYds)<=900);
+      const part2=data.filter(r=>rangeFromYards(r.rYds)>900);
+      const parts=[part1,part2];
+      parts.forEach((partRows,idx)=>{
+        const partNo=idx+1;
+        expanded.push({
+          ...base,
+          data:partRows,
+          cols:colCount,
+          groupId:`da-${base.targetDa}`,
+          groupSize:2,
+          groupPart:partNo,
+          label:partNo===1?(base.label+' · ≤900'):(base.label+' · 900+')
+        });
+      });
+    }else{
+      expanded.push({...base,data,cols:4,groupId:`da-${base.targetDa}`,groupSize:1,groupPart:1});
+    }
+  });
+  const cards=expanded.map((c,i)=>({...c,index:i}));
+  cards.push({
+    index:cards.length,
+    blank:true,
+    label:'Blank Yardage',
+    results:cards[0]?.results||results,
+    data:getWristDataRows(cards[0]?.results||results),
+    groupId:'blank',
+    groupSize:1,
+    groupPart:1
+  });
+
+  window._wcData={p,nm,cards};
+  function screenCard(card){
+    if(card.blank) return screenBlankCard(card);
+    const rows=card.results;
+    const da=card.targetDa;
+    const press=card.press;
+    const data=card.data||getWristDataRows(rows);
+    const colCount=card.cols||4;
+    const{cols}=splitColsEven(data,colCount);
+    const colsHTML=cols.map(col=>{
+      const rws=col.map(r=>{
+        if(!r){
+          return '<div class="wc-dr sub"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></div>';
+        }
+        const distClass=wcKeyRange(r.rYds,p.z_yds)?'dist-k':'';
+        const cls=r.sub?' sub':'';
+        const bc=wcBandColor(r.rYds,p.z_yds);
+        return '<div class="wc-dr'+cls+'">'
+          +'<span class="'+distClass+'" style="color:'+bc+'">'+fmtRange(r.rYds)+(r.isZ?'*':'')+'</span>'
+          +'<span class="drop-v" style="color:'+bc+'">'+f(r.mil,1)+'</span>'
+          +'<span class="wind-v" style="color:'+bc+'">'+f(r.dMil,1)+'</span></div>';
+      }).join('');
+      return '<div class="wc-dcol"><div class="wc-sch"><span>Dist</span><span>Drop</span><span>Wind</span></div><div class="wc-drows">'+rws+'</div></div>';
+    }).join('');
+    return '<div class="wc-card-wrap" id="wc-card-'+card.index+'">'
+      +'<div class="wc-card-sizelbl"><b>5″ × 3″</b> &nbsp; Card '+(card.index+1)+' — DA '+(da>=0?'+':'')+da+' ft'+(card.targetDa===calcDa?' · CALC':'')
+      +(card.groupSize>1?` · ${card.groupPart}/${card.groupSize}`:'')
+      +(userDa!=null&&card.targetDa===userDa?' · USER':'')
+      +'&nbsp;&nbsp;<button class="pbtn" style="font-size:8px;padding:3px 10px" onclick="printCard('+card.index+')">&#128424; Print</button></div>'
+      +'<div class="wc-card'+(wcStepSel===10?' wc-card-10':'')+'">'
+        +'<div class="wc-h1"><div>'+nm+'</div><div style="text-align:center">MV: '+p.mv+' fps &middot; '+p.bct+' '+p.bc.toFixed(3)+'</div><div style="text-align:right">Zero: '+fmtRange(p.z_yds)+' '+rangeUnitLabel()+'</div></div>'
+        +'<div class="wc-h2">'
+          +'<div class="c">Den Altitide: <span class="v">'+da+'</span></div>'
+          +'<div class="c">Temp: <span class="v">'+(p.tempDisp||Math.round(p.tF)+'&deg;F')+'</span></div>'
+          +'<div class="c">Press: <span class="v">'+press.toFixed(2)+'</span></div>'
+          +'<div class="c">wind: <span class="v">'+p.w_mph+'mph</span></div>'
+          +'<div class="c">Fps: <span class="v">'+p.mv+'</span></div>'
+        +'</div>'
+        +'<div class="wc-data" style="grid-template-columns:repeat('+colCount+',1fr)">'+colsHTML+'</div>'
+      +'</div></div>';
+  }
+  function screenBlankCard(card){
+    const data=card.data||getWristDataRows(card.results||results);
+    const{cols}=splitColsEven(data,4);
+    const colsHTML=cols.map(col=>{
+      const rws=col.map(r=>{
+        if(!r){
+          return '<div class="wc-dr"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></div>';
+        }
+        const bc=wcBandColor(r.rYds,p.z_yds);
+        return '<div class="wc-dr">'
+          +'<span style="color:'+bc+'">'+fmtRange(r.rYds)+(r.isZ?'*':'')+'</span>'
+          +'<span class="drop-v">&nbsp;</span>'
+          +'<span class="wind-v">&nbsp;</span></div>';
+      }).join('');
+      return '<div class="wc-dcol"><div class="wc-sch"><span>Dist</span><span>Drop</span><span>Wind</span></div><div class="wc-drows">'+rws+'</div></div>';
+    }).join('');
+    return '<div class="wc-card-wrap" id="wc-card-'+card.index+'">'
+      +'<div class="wc-card-sizelbl"><b>5″ × 3″</b> &nbsp; Blank Yardage Card'
+      +'&nbsp;&nbsp;<button class="pbtn" style="font-size:8px;padding:3px 10px" onclick="printBlankCard('+card.index+')">&#128424; Print Blank</button></div>'
+      +'<div class="wc-card'+(wcStepSel===10?' wc-card-10':'')+'">'
+        +'<div class="wc-h1"><div>RANGE CARD</div><div style="text-align:center">Blank Write-In Card</div><div style="text-align:right">YARDAGE</div></div>'
+        +'<div class="wc-h2">'
+          +'<div class="c">Step: <span class="v">'+(wcStepSel===10?('25/10 hybrid '+rangeUnitLabel()):(wcStepSel+' '+rangeUnitLabel()))+'</span></div>'
+          +'<div class="c">Drop: <span class="v">Write in</span></div>'
+          +'<div class="c">Wind: <span class="v">&nbsp;</span></div>'
+          +'<div class="c">Profile: <span class="v">&nbsp;</span></div>'
+          +'<div class="c">Notes: <span class="v">&nbsp;</span></div>'
+        +'</div>'
+        +'<div class="wc-data">'+colsHTML+'</div>'
+      +'</div></div>';
+  }
+
+  const cardButtons=cards.map(c=>
+    '<button class="pbtn ghost" onclick="scrollToCard('+c.index+')">Card '+(c.index+1)+' ('+c.label+')</button>'
+  ).join('');
+  const cardsHTML=cards.map(c=>screenCard(c)).join('');
+
+  document.getElementById('twWC').innerHTML=
+    '<div class="wc-toolbar">'
+    +'<span class="wc-toolbar-lbl">3×5″ Wrist Coach</span>'
+    +'<button class="pbtn" onclick="printCard(-1)">&#128424; Print All Cards</button>'
+    +'<button class="pbtn ghost" onclick="printBlankCard()">Print Blank Card</button>'
+    +cardButtons
+    +'</div>'
+    +'<div class="wc-scroll">'+cardsHTML+'</div>';
+}
+
+function renderMoversWC(results,p){
+  const src=(GR&&Array.isArray(GR)&&GR.length)?GR:results;
+  const nm=document.getElementById('bulletName').value;
+  const spdCards=[2,4,6,8,10];
+  const wcStepSel=parseFloat(document.getElementById('stepSize')?.value)||25;
+  const baseRows=src.filter(r=>{
+    const rd=rangeFromYards(r.rYds);
+    if(rd<=0) return false;
+    if(wcStepSel!==10) return true;
+    if(rd<=200) return rangeIsMultiple(r.rYds,25);
+    return rangeIsMultiple(r.rYds,10);
+  });
+  const cards=spdCards.map((speed,index)=>({index,speed,rows:baseRows}));
+  window._mwcData={cards};
+
+  function screenCard(card){
+    const data=card.rows;
+    const colCount=data.length<=36?2:(data.length<=72?3:4);
+    const pc=Math.ceil(data.length/colCount);
+    const cols=Array.from({length:colCount},(_,i)=>data.slice(i*pc,(i+1)*pc));
+    const colsHTML=cols.map(col=>{
+      const rws=col.map(r=>{
+        const bc=wcBandColor(r.rYds,p.z_yds);
+        const leadMil=r.rYds>0?r.tof*(card.speed*17.6)/(r.rYds*0.036):0;
+        return '<div class="wc-dr'+(r.sub?' sub':'')+'">'
+          +'<span style="color:'+bc+'">'+fmtRange(r.rYds)+'</span>'
+          +'<span style="color:'+bc+'">'+r.tof.toFixed(3)+'</span>'
+          +'<span style="color:'+bc+'">'+f(leadMil,2)+'</span>'
+          +'</div>';
+      }).join('');
+      return '<div class="wc-dcol"><div class="wc-sch"><span>Dist</span><span>TOF</span><span>Lead</span></div><div class="wc-drows">'+rws+'</div></div>';
+    }).join('');
+    return '<div class="wc-card-wrap" id="mvc-card-'+card.index+'">'
+      +'<div class="wc-card-sizelbl"><b>5″ × 3″</b> &nbsp; Mover Card '+(card.index+1)+' — '+card.speed+' mph'
+      +'&nbsp;&nbsp;<button class="pbtn" style="font-size:8px;padding:3px 10px" onclick="printMoverCard('+card.index+')">&#128424; Print</button></div>'
+      +'<div class="wc-card wc-card-mwc">'
+        +'<div class="wc-h1"><div>'+nm+'</div><div style="text-align:center">Mover Lead Card</div><div style="text-align:right">Zero: '+fmtRange(p.z_yds)+' '+rangeUnitLabel()+'</div></div>'
+        +'<div class="wc-h2">'
+          +'<div class="c">Target Speed: <span class="v">'+card.speed+' mph</span></div>'
+          +'<div class="c">Clock: <span class="v">'+p.w_clk+' hr</span></div>'
+          +'<div class="c">MV: <span class="v">'+p.mv+' fps</span></div>'
+          +'<div class="c">BC: <span class="v">'+p.bc.toFixed(3)+' '+p.bct+'</span></div>'
+          +'<div class="c">Lead: <span class="v">MIL</span></div>'
+        +'</div>'
+        +'<div class="wc-data" style="grid-template-columns:repeat('+colCount+',1fr)">'+colsHTML+'</div>'
+      +'</div></div>';
+  }
+
+  const cardButtons=cards.map(c=>
+    '<button class="pbtn ghost" onclick="scrollToMoverCard('+c.index+')">Card '+(c.index+1)+' ('+c.speed+' mph)</button>'
+  ).join('');
+  const cardsHTML=cards.map(c=>screenCard(c)).join('');
+  document.getElementById('twMWC').innerHTML=
+    '<div class="wc-toolbar">'
+    +'<span class="wc-toolbar-lbl">3×5″ Movers Coach</span>'
+    +'<button class="pbtn" onclick="printMoverCard(-1)">&#128424; Print All Movers Cards</button>'
+    +cardButtons
+    +'</div>'
+    +'<div class="wc-scroll">'+cardsHTML+'</div>';
+}
+
+function reRenderWC(){if(GR&&GP)renderWC(GR,GP);}
+function scrollToCard(cardIndex){
+  const el=document.getElementById('wc-card-'+cardIndex);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function scrollToMoverCard(cardIndex){
+  const el=document.getElementById('mvc-card-'+cardIndex);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+let _printPreviewHtml='';
+function getPreviewCardEl(prefix,cardIndex){
+  return document.querySelector('#'+prefix+'-'+cardIndex+' .wc-card');
+}
+function buildPrintHtml(cardIndices,dated,prefix='wc-card'){
+  const baseStyle=document.querySelector('style')?document.querySelector('style').textContent:'';
+  const sheets=cardIndices.map(i=>{
+    const cardEl=getPreviewCardEl(prefix,i);
+    if(!cardEl) return '';
+    return '<div class="print-sheet">'+cardEl.outerHTML+'</div>';
+  }).join('');
+  const printCss='@page{size:5in 3in;margin:0 !important}*{box-sizing:border-box}html,body{margin:0 !important;padding:0 !important;background:#fff !important;overflow:visible !important;height:auto !important;max-height:none !important}body{display:block !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-sheet{width:5in;height:3in;overflow:hidden;page-break-after:always;break-after:page;page-break-inside:avoid;break-inside:avoid;display:flex;align-items:center;justify-content:center;padding:.04in .03in .04in .05in}.print-sheet:last-child{page-break-after:auto;break-after:auto}.print-sheet .wc-card{width:4.70in !important;height:2.68in !important;border:none !important;margin:0 !important;box-shadow:inset 0 0 0 1.4pt #333,inset 2.2pt 0 0 #000 !important}.print-sheet .wc-h1,.print-sheet .wc-h2,.print-sheet .wc-data{visibility:visible !important;opacity:1 !important}.print-sheet .wc-h1{display:grid !important}.print-sheet .wc-h2{display:flex !important}.print-sheet .wc-data{display:grid !important;width:100% !important}.print-sheet .wc-dcol{min-width:0 !important}';
+  return '<!DOCTYPE html><html><head><title>Wrist Coach '+dated+'</title><style>'+baseStyle+'\n'+printCss+'</style></head><body>'+sheets+'</body></html>';
+}
+function openPrintPreview(html,title,cardIndices,prefix='wc-card'){
+  const modal=document.getElementById('printPreview');
+  const cardsHost=document.getElementById('ppCards');
+  const ttl=document.getElementById('ppTitle');
+  ttl.textContent=title||'Print Preview';
+  _printPreviewHtml=html;
+  cardsHost.innerHTML=cardIndices.map(i=>{
+    const cardEl=getPreviewCardEl(prefix,i);
+    return cardEl?'<div class="print-preview-sheet">'+cardEl.outerHTML+'</div>':'';
+  }).join('')||'<div style="color:#c0cdd8;font-size:12px">Preview unavailable.</div>';
+  modal.classList.add('on');
+}
+function closePrintPreview(){
+  const modal=document.getElementById('printPreview');
+  const cardsHost=document.getElementById('ppCards');
+  modal.classList.remove('on');
+  cardsHost.innerHTML='';
+  _printPreviewHtml='';
+}
+function printPreviewNow(){
+  if(!_printPreviewHtml){alert('Preview not ready.');return;}
+  const frame=document.createElement('iframe');
+  frame.style.position='fixed';
+  frame.style.right='-10000px';
+  frame.style.bottom='0';
+  frame.style.width='1px';
+  frame.style.height='1px';
+  frame.style.border='0';
+  frame.setAttribute('aria-hidden','true');
+  document.body.appendChild(frame);
+  frame.onload=()=>{
+    setTimeout(()=>{
+      try{
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+      }catch(e){
+        alert('Print failed. Please try again.');
+      }
+      setTimeout(()=>{
+        if(frame&&frame.parentNode) frame.parentNode.removeChild(frame);
+      },1200);
+    },150);
+  };
+  const doc=frame.contentWindow.document;
+  doc.open();
+  doc.write(_printPreviewHtml);
+  doc.close();
+}
+
+// ──────────────────────────────────────────────────────
+// PRINT CARD — popup @page{5"x3"}, inline styles + heat-map
+// ──────────────────────────────────────────────────────
+function printCard(cardIndex){
+  if(!GR||!window._wcData){alert('Calculate first.');return;}
+  const{cards}=window._wcData;
+  const dated=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  let cardIndices=[];
+  if(cardIndex<0){
+    cardIndices=cards.filter(c=>!c.blank).map(c=>c.index);
+  }else{
+    const selected=cards.find(c=>c.index===cardIndex);
+    if(selected&&selected.groupId&&selected.groupSize>1){
+      cardIndices=cards.filter(c=>c.groupId===selected.groupId).map(c=>c.index);
+    }else{
+      cardIndices=cards.filter(c=>c.index===cardIndex).map(c=>c.index);
+    }
+  }
+  if(!cardIndices.length){alert('Card not found. Recalculate and try again.');return;}
+  const html=buildPrintHtml(cardIndices,dated,'wc-card');
+  openPrintPreview(html,'Print Preview — 3x5 Wrist Coach',cardIndices,'wc-card');
+}
+function printBlankCard(cardIndex=null){
+  if(!GR||!window._wcData){alert('Calculate first.');return;}
+  const{cards}=window._wcData;
+  const dated=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const blank=cardIndex!=null?cards.find(c=>c.index===cardIndex&&c.blank):cards.find(c=>c.blank);
+  if(!blank){alert('Blank card not found. Recalculate and try again.');return;}
+  const cardIndices=[blank.index];
+  const html=buildPrintHtml(cardIndices,dated,'wc-card');
+  openPrintPreview(html,'Print Preview — 3x5 Blank Yardage',cardIndices,'wc-card');
+}
+
+function printMoverCard(cardIndex){
+  if(!GR||!window._mwcData){alert('Calculate first.');return;}
+  const{cards}=window._mwcData;
+  const dated=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const cardIndices=cardIndex<0?cards.map(c=>c.index):cards.filter(c=>c.index===cardIndex).map(c=>c.index);
+  if(!cardIndices.length){alert('Card not found. Recalculate and try again.');return;}
+  const html=buildPrintHtml(cardIndices,dated,'mvc-card');
+  openPrintPreview(html,'Print Preview — 3x5 Movers Coach',cardIndices,'mvc-card');
+}
+
+function printSdfCard(cardIndex){
+  if(!GR||!window._sdfwcData){alert('Calculate first.');return;}
+  const dated=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const cardIndices=[0];
+  const html=buildPrintHtml(cardIndices,dated,'sdfc-card');
+  openPrintPreview(html,'Print Preview — 3x5 SDF Coach',cardIndices,'sdfc-card');
+}
+
+// ══════════════════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════════════════
+function exportCSV(){
+  if(!GR){alert('Calculate first.');return}
+  let csv='Range(yds),Vel(fps),Energy(ft-lb),Drop(in),Drop(MOA),Drop(MIL),Wind(in),Wind(MOA),Wind(MIL),TOF(sec),Mach\n';
+  GR.forEach(r=>{
+    csv+=[r.rYds,r.vfps,r.en,r.dropIn.toFixed(3),r.moa.toFixed(3),r.mil.toFixed(3),
+          r.dIn.toFixed(3),r.dMoa.toFixed(3),r.dMil.toFixed(3),r.tof.toFixed(4),r.M.toFixed(4)].join(',')+'\n';
+  });
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=(document.getElementById('bulletName').value||'ballistics').replace(/\s+/g,'_')+'.csv';
+  a.click();
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+initPresetDropdown(PRESETS['6cm_147eldm']?'6cm_147eldm':(BULLET_DB[0]?.id||''));
+wireStatePersistence();
+const hadSavedState=loadFormState();
+initTempUnit();
+initRangeUnit();
+if(!hadSavedState){
+  onElevChange();  // elevation=0 → pressure=29.92 inHg → refreshAtmo()
+}
+setActiveTabUI(ACTIVE_TAB_ID);
+calculate();     // runs solver, renders all tabs
+</script>
+</body>
+</html>

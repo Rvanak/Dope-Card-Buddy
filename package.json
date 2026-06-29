@@ -1,0 +1,46 @@
+{
+  "name": "dope-card-buddy-paywall",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:push": "prisma db push",
+    "stripe:bootstrap": "node scripts/stripe/bootstrap-products.mts",
+    "stripe:webhook": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
+    "admin:create": "tsx scripts/admin/create-admin.mts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "@stripe/react-stripe-js": "^6.3.0",
+    "@stripe/stripe-js": "^9.3.1",
+    "@vercel/analytics": "^2.0.1",
+    "bcryptjs": "^3.0.3",
+    "canvas": "^3.2.3",
+    "mupdf": "^1.27.0",
+    "next": "16.2.4",
+    "next-auth": "^4.24.14",
+    "pdfjs-dist": "^5.6.205",
+    "prisma": "^6.9.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "stripe": "^22.1.0",
+    "zod": "^4.4.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.4",
+    "tailwindcss": "^4",
+    "tsx": "^4.20.6",
+    "typescript": "^5"
+  }
+}
